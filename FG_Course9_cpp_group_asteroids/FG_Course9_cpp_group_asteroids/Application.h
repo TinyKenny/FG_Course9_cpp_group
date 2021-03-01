@@ -18,6 +18,7 @@ private:
 public:
 	static Application* getInstace();
 	void run();
+	void quit();
 private:
 	void runGameLoop();
 };

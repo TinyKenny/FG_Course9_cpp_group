@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "InputHandler.h"
+
 #include <chrono>
 #include <iostream>
 #include <string>
@@ -40,6 +42,11 @@ void Application::run()
 
 }
 
+void Application::quit()
+{
+	keepGameLoopAlive = false;
+}
+
 void Application::runGameLoop()
 {
 	if (keepGameLoopAlive)
@@ -63,7 +70,7 @@ void Application::runGameLoop()
 		currentTime = newTime;
 		accumulator += frameTime;
 
-		// TODO handle input!
+		InputHandler::updateInputs(this);
 
 		while (accumulator >= dt)
 		{
@@ -81,5 +88,4 @@ void Application::runGameLoop()
 
 		window->render(gameObjects);
 	}
-
 }
