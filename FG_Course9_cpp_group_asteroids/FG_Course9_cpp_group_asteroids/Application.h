@@ -1,6 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "Window.h"
 #include "GameObject.h"
 
 #include <vector>
@@ -11,6 +12,7 @@ public:
 	// public vars here
 private:
 	bool keepGameLoopAlive = false;
+	Window* window;
 	std::vector<GameObject> gameObjects;
 	Application(); // made this private to prevent stack-allocated Application-objects
 public:

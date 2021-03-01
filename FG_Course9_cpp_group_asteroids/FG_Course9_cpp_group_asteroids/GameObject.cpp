@@ -7,3 +7,13 @@ void GameObject::Update(double dt)
 		comp.Update(dt);
 	}
 }
+
+void GameObject::setPoints(std::vector<Vector2> pointsToSet)
+{
+	points = pointsToSet;
+}
+
+std::vector<Vector2> GameObject::getPoints()
+{
+	return points;
+}

@@ -7,7 +7,6 @@
 
 Application::Application()
 {
-
 }
 
 Application* Application::getInstace()
@@ -17,15 +16,28 @@ Application* Application::getInstace()
 
 void Application::run()
 {
-	// TODO init SDL
-	// TODO make SDL window
-	// TODO make SDL renderer
+	window = new Window();
 
-	runGameLoop();
+	/*
+	std::vector<Vector2> points;
+	points.push_back({ 10.0, 10.0 });
+	points.push_back({ 10.0, 60.0 });
+	points.push_back({ 60.0, 10.0 });
 
-	// TODO destroy SDL renderer
-	// TODO destroy SDL window
-	// TODO SDL_Quit();
+	GameObject myGO;
+	myGO.setPoints(points);
+
+	gameObjects.push_back(myGO);
+	*/
+	// TODO populate gameobject list
+
+	if (window->initializedSuccessfully())
+	{
+		runGameLoop();
+	}
+
+	delete window;
+
 }
 
 void Application::runGameLoop()
@@ -60,14 +72,14 @@ void Application::runGameLoop()
 			{
 				go.Update(dt);
 			}
-			// TODO collision checks and movement
 
+			// TODO collision checks and object movement
 
 			accumulator -= dt;
 			t += dt;
 		}
 
-		// TODO render
+		window->render(gameObjects);
 	}
 
 }
