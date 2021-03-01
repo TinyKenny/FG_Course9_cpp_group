@@ -56,7 +56,13 @@ void Application::runGameLoop()
 		while (accumulator >= dt)
 		{
 			std::cout << "dt: " << std::to_string(dt) << std::endl;
-			// TODO perform fixedUpdate, passing in dt as deltatime
+			for (GameObject go : gameObjects)
+			{
+				go.Update(dt);
+			}
+			// TODO collision checks and movement
+
+
 			accumulator -= dt;
 			t += dt;
 		}
