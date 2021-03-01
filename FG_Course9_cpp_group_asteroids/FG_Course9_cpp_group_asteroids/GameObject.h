@@ -10,7 +10,7 @@ class GameObject
 {
 public:
 	Vector2 velocity;
-	void Update(double dt);
+	virtual void Update(double dt);
 	void setPoints(std::vector<Vector2> pointsToSet);
 	std::vector<Vector2> getPoints();
 private:
