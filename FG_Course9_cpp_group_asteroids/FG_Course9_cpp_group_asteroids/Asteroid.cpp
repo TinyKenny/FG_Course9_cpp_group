@@ -4,14 +4,22 @@
 Asteroid::Asteroid()
 {
 	std::vector<Vector2> points;
-	points.push_back({ 50, 10 });
+	points.push_back({ 55, 10 });
 	points.push_back({ 60, 20 });
-	points.push_back({ 70, 30 });
-	points.push_back({ 70, 60 });
-	points.push_back({ 60, 70 });
-	points.push_back({ 50, 80 });
-	points.push_back({ 40, 90 });
-	points.push_back({ 40, 90 });
+	points.push_back({ 65, 25 });
+	points.push_back({ 65, 45 });
+	points.push_back({ 60, 50 });
+	points.push_back({ 55, 55 });
+	points.push_back({ 35, 55 });
+	points.push_back({ 25, 45 });
+	points.push_back({ 25, 25 });
+	points.push_back({ 35, 10 });
 
+	GameObject::velocity = {100,100};
 	setPoints(points);
+}
+void Asteroid::Update(double dt)
+{
+	position.x += velocity.x * dt;
+	position.y += velocity.y * dt;
 };
