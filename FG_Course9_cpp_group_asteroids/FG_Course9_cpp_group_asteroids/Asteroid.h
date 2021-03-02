@@ -7,8 +7,6 @@ class Asteroid : public GameObject
 {
 public:
 	Asteroid();
-	
-	void Update(double dt) override;
 };
 
 #endif // ASTEROID_H

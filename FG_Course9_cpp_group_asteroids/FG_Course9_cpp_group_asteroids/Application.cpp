@@ -1,8 +1,7 @@
 #include "Application.h"
 
 #include "InputHandler.h"
-
-#include "Asteroid.h"
+#include "PhysicsSystem.h"
 
 #include <chrono>
 #include <iostream>
@@ -63,16 +62,17 @@ void Application::run()
 {
 	/*
 	{
-		GameObject go;
+		GameObject* go = new GameObject();
 
 		std::vector<Vector2> points;
 		points.push_back({ 10, 10 });
 		points.push_back({ 10, 60 });
 		points.push_back({ 60, 10 });
 
-		go.setPoints(points);
+		go->setPoints(points);
+		go->velocity = { 1.0, 1.0 };
 		
-		gameObjects.push_back(go);
+		asteroids.push_back(go);
 	}
 	*/
 	spawnAsteroids();
@@ -116,13 +116,9 @@ void Application::runGameLoop()
 		while (accumulator >= dt)
 		{
 			std::cout << "dt: " << std::to_string(dt) << std::endl;
-			for (GameObject* go : gameObjects)
-			{
-				go->Update(dt);
-			}
+			player.update(dt);
 
-			// TODO collision checks and object movement
-
+			PhysicsSystem::physicsUpdate(this, dt, asteroids, playerBullets, player);
 
 			accumulator -= dt;
 			t += dt;
@@ -132,13 +128,6 @@ void Application::runGameLoop()
 	}
 }
 
-void Application::physicsUpdate()
-{
-	for (GameObject* go : gameObjects)
-	{
-		
-	}
-}
 
 const void Application::renderScene()
 {
@@ -147,17 +136,24 @@ const void Application::renderScene()
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-	for (GameObject* go : gameObjects)
+	for (Asteroid& asteroid : asteroids)
 	{
-		go->draw(renderer);
+		asteroid.draw(renderer);
 	}
+
+	for (PlayerBullet& bullet : playerBullets)
+	{
+		bullet.draw(renderer);
+	}
+	
+	player.draw(renderer);
 
 	SDL_RenderPresent(renderer);
 }
 
 void Application::spawnAsteroids()
 {
-	Asteroid *ast = new Asteroid();
-	gameObjects.push_back(ast);
+	//Asteroid *ast = new Asteroid();
+	asteroids.push_back(Asteroid());
 
 }

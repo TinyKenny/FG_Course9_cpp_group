@@ -18,8 +18,4 @@ Asteroid::Asteroid()
 	GameObject::velocity = {100,100};
 	setPoints(points);
 }
-void Asteroid::Update(double dt)
-{
-	position.x += velocity.x * dt;
-	position.y += velocity.y * dt;
-};
+

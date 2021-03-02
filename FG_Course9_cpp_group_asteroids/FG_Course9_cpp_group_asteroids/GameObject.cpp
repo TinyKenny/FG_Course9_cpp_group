@@ -2,12 +2,7 @@
 
 #include <iostream>
 
-GameObject::GameObject()
-{
-	idkMan = 0.0f;
-}
-
-void GameObject::Update(double dt)
+GameObject::GameObject() : position({ 0.0f, 0.0f }), velocity({ 0.0f, 0.0f })
 {
 }
 

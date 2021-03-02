@@ -153,20 +153,24 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Asteroid.cpp" />
-    <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix2x2.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="PlayerBullet.cpp" />
+    <ClCompile Include="PlayerSpaceship.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Asteroid.h" />
-    <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Matrix2x2.h" />
+    <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="PlayerBullet.h" />
+    <ClInclude Include="PlayerSpaceship.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

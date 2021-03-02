@@ -1,8 +1,9 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-//#include "Window.h"
-#include "GameObject.h"
+#include "Asteroid.h"
+#include "PlayerBullet.h"
+#include "PlayerSpaceship.h"
 
 #include <SDL.h>
 
@@ -16,7 +17,9 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	bool keepGameLoopAlive = false;
-	std::vector<GameObject*> gameObjects;
+	std::vector<Asteroid> asteroids;
+	std::vector<PlayerBullet> playerBullets;
+	PlayerSpaceship player;
 	Application(); // made this private to prevent stack-allocated Application-objects
 	void initSDL();
 public:
@@ -26,7 +29,6 @@ public:
 	void quit();
 private:
 	void runGameLoop();
-	void physicsUpdate();
 	const void renderScene();
 	void spawnAsteroids();
 };
