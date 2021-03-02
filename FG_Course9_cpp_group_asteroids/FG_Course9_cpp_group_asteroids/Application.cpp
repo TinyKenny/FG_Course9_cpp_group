@@ -154,6 +154,11 @@ const void Application::renderScene()
 void Application::spawnAsteroids()
 {
 	//Asteroid *ast = new Asteroid();
-	asteroids.push_back(Asteroid());
+	asteroids.push_back(Asteroid(window));
+	asteroids.push_back(Asteroid(window));
+	asteroids.push_back(Asteroid(window));
+	asteroids.push_back(Asteroid(window));
+
+
 
 }

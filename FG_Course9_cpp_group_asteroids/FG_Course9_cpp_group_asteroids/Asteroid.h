@@ -6,7 +6,16 @@
 class Asteroid : public GameObject
 {
 public:
-	Asteroid();
+	Asteroid(SDL_Window* window);
+
+private:
+	int* windowWidth;
+	int* windowHeight;
+
+
+private:
+	void generateSpawnPoint(SDL_Window* window);
+	void generateVelocity(int min, int max);
 };
 
 #endif // ASTEROID_H
