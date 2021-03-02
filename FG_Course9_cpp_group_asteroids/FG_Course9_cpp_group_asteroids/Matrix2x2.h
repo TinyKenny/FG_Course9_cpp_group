@@ -1,6 +1,8 @@
 #ifndef MATRIX_2X2_H
 #define MATRIX_2X2_H
 
+#include "Vector2.h"
+
 /*
 +---+---+
 |m00|m10|
@@ -26,7 +28,8 @@ identity matrix:
 struct Matrix2x2
 {
 public:
-
+	void rotateByRadians(double angle);
+	Vector2 transformVector(Vector2 inVector);
 private:
 	float m00 = 1.0f;
 	float m10 = 0.0f;

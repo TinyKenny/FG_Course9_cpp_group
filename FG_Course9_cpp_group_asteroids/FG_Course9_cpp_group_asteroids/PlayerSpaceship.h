@@ -7,6 +7,7 @@ class PlayerSpaceship :
     public GameObject
 {
 public:
+    PlayerSpaceship();
     void update(double dt);
     // TODO player spaceship should have rotation
     // TODO player spaceship should have player controls
