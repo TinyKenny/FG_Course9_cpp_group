@@ -9,6 +9,47 @@
 
 Application::Application()
 {
+	initSDL();
+}
+
+void Application::initSDL()
+{
+	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
+	{
+		std::cout << SDL_GetError() << std::endl;
+		return;
+	}
+
+	// TODO not have hard-coded name and window size
+	window = SDL_CreateWindow("Asteroids", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 400, SDL_WINDOW_SHOWN);
+	if (window == nullptr)
+	{
+		std::cout << SDL_GetError() << std::endl;
+		return;
+	}
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == nullptr)
+	{
+		std::cout << SDL_GetError() << std::endl;
+		return;
+	}
+}
+
+Application::~Application()
+{
+	if (renderer != nullptr)
+	{
+		SDL_DestroyRenderer(renderer);
+	}
+	if (window != nullptr)
+	{
+		SDL_DestroyWindow(window);
+	}
+	if (SDL_WasInit(SDL_INIT_EVERYTHING))
+	{
+		SDL_Quit();
+	}
 }
 
 Application* Application::getInstace()
@@ -18,28 +59,26 @@ Application* Application::getInstace()
 
 void Application::run()
 {
-	window = new Window();
-
 	/*
-	std::vector<Vector2> points;
-	points.push_back({ 10.0, 10.0 });
-	points.push_back({ 10.0, 60.0 });
-	points.push_back({ 60.0, 10.0 });
+	{
+		GameObject go;
 
-	GameObject myGO;
-	myGO.setPoints(points);
+		std::vector<Vector2> points;
+		points.push_back({ 10, 10 });
+		points.push_back({ 10, 60 });
+		points.push_back({ 60, 10 });
 
-	gameObjects.push_back(myGO);
+		go.setPoints(points);
+
+		gameObjects.push_back(go);
+	}
 	*/
-	// TODO populate gameobject list
 
-	if (window->initializedSuccessfully())
+
+	if (!keepGameLoopAlive && SDL_WasInit(SDL_INIT_EVERYTHING) && window != nullptr && renderer != nullptr)
 	{
 		runGameLoop();
 	}
-
-	delete window;
-
 }
 
 void Application::quit()
@@ -86,6 +125,26 @@ void Application::runGameLoop()
 			t += dt;
 		}
 
-		window->render(gameObjects);
+		renderScene();
 	}
+}
+
+const void Application::renderScene()
+{
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+	for (GameObject go : gameObjects)
+	{
+		std::vector<Vector2> points = go.getPoints();
+		int pointCount = points.size();
+		for (int i = 0; i < pointCount; ++i)
+		{
+			SDL_RenderDrawLineF(renderer, points[i].x, points[i].y, points[(i + 1) % pointCount].x, points[(i + 1) % pointCount].y);
+		}
+	}
+
+	SDL_RenderPresent(renderer);
 }
