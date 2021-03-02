@@ -3,8 +3,9 @@
 
 struct Vector2
 {
-	double x;
-	double y;
+public:
+	float x;
+	float y;
 };
 
 #endif // !VECTOR_2_H

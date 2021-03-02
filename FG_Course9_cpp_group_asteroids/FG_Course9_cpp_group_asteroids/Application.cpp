@@ -69,11 +69,10 @@ void Application::run()
 		points.push_back({ 60, 10 });
 
 		go.setPoints(points);
-
+		
 		gameObjects.push_back(go);
 	}
 	*/
-
 
 	if (!keepGameLoopAlive && SDL_WasInit(SDL_INIT_EVERYTHING) && window != nullptr && renderer != nullptr)
 	{
@@ -114,7 +113,7 @@ void Application::runGameLoop()
 		while (accumulator >= dt)
 		{
 			std::cout << "dt: " << std::to_string(dt) << std::endl;
-			for (GameObject go : gameObjects)
+			for (GameObject& go : gameObjects)
 			{
 				go.Update(dt);
 			}
@@ -136,14 +135,9 @@ const void Application::renderScene()
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-	for (GameObject go : gameObjects)
+	for (GameObject& go : gameObjects)
 	{
-		std::vector<Vector2> points = go.getPoints();
-		int pointCount = points.size();
-		for (int i = 0; i < pointCount; ++i)
-		{
-			SDL_RenderDrawLineF(renderer, points[i].x, points[i].y, points[(i + 1) % pointCount].x, points[(i + 1) % pointCount].y);
-		}
+		go.draw(renderer);
 	}
 
 	SDL_RenderPresent(renderer);
