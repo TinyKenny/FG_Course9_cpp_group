@@ -16,7 +16,7 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	bool keepGameLoopAlive = false;
-	std::vector<GameObject> gameObjects;
+	std::vector<GameObject*> gameObjects;
 	Application(); // made this private to prevent stack-allocated Application-objects
 	void initSDL();
 public:
@@ -26,7 +26,9 @@ public:
 	void quit();
 private:
 	void runGameLoop();
+	void physicsUpdate();
 	const void renderScene();
+	void spawnAsteroids();
 };
 
 #endif // !APPLICATION_H

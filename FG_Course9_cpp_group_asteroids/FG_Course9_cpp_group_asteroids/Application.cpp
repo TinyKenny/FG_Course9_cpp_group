@@ -2,6 +2,8 @@
 
 #include "InputHandler.h"
 
+#include "Asteroid.h"
+
 #include <chrono>
 #include <iostream>
 #include <string>
@@ -73,6 +75,7 @@ void Application::run()
 		gameObjects.push_back(go);
 	}
 	*/
+	spawnAsteroids();
 
 	if (!keepGameLoopAlive && SDL_WasInit(SDL_INIT_EVERYTHING) && window != nullptr && renderer != nullptr)
 	{
@@ -113,18 +116,27 @@ void Application::runGameLoop()
 		while (accumulator >= dt)
 		{
 			std::cout << "dt: " << std::to_string(dt) << std::endl;
-			for (GameObject& go : gameObjects)
+			for (GameObject* go : gameObjects)
 			{
-				go.Update(dt);
+				go->Update(dt);
 			}
 
 			// TODO collision checks and object movement
+
 
 			accumulator -= dt;
 			t += dt;
 		}
 
 		renderScene();
+	}
+}
+
+void Application::physicsUpdate()
+{
+	for (GameObject* go : gameObjects)
+	{
+		
 	}
 }
 
@@ -135,10 +147,17 @@ const void Application::renderScene()
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-	for (GameObject& go : gameObjects)
+	for (GameObject* go : gameObjects)
 	{
-		go.draw(renderer);
+		go->draw(renderer);
 	}
 
 	SDL_RenderPresent(renderer);
+}
+
+void Application::spawnAsteroids()
+{
+	Asteroid *ast = new Asteroid();
+	gameObjects.push_back(ast);
+
 }

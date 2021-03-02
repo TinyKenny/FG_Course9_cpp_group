@@ -14,10 +14,11 @@ public:
 	GameObject();
 	Vector2 position;
 	Vector2 velocity;
-	void Update(double dt);
+	virtual void Update(double dt);
 	virtual void draw(SDL_Renderer* renderer);
 	void setPoints(std::vector<Vector2> pointsToSet);
 	const std::vector<Vector2> getPoints();
+
 private:
 	float idkMan;
 	// TODO GameObjects should have position and rotation
