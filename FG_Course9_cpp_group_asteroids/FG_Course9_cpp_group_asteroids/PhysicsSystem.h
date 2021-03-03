@@ -19,6 +19,8 @@ public:
 							  PlayerSpaceship& player);
 	
 	static void wrapAround(GameObject &go, int windowWidth, int windowHeight);
+private:
+	//static bool checkLineShapeIntersection(std::vector<Vector2>& shapeOnePoints, std::vector<Vector2>& shapeTwoPoints);
 };
 
 #endif // !PHYSICS_SYSTEM_H

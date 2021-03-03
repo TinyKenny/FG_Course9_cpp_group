@@ -1,5 +1,7 @@
 #include "Asteroid.h"
 
+#include "Application.h"
+
 double xPos;
 double yPos;
 
@@ -23,6 +25,12 @@ Asteroid::Asteroid(SDL_Window* window)
 
 	generateSpawnPoint(window);
 	generateVelocity(20,200);
+}
+
+void Asteroid::DestroyAsteroid(Application* app)
+{
+	// pointer to app needed to remove this instance from the list and add smaller asteroids to the list
+	// TODO asteroid destruction logic
 }
 
 //TODO: Magic numbers, refactor

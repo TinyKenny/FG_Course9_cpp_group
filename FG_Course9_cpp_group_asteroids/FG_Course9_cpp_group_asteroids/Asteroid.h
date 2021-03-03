@@ -3,10 +3,13 @@
 
 #include "GameObject.h"
 
+class Application;
+
 class Asteroid : public GameObject
 {
 public:
 	Asteroid(SDL_Window* window);
+	void DestroyAsteroid(Application* app);
 
 private:
 	int* windowWidth;
