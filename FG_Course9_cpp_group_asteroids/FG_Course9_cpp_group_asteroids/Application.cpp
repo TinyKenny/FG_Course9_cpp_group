@@ -8,7 +8,7 @@
 #include <string>
 
 
-Application::Application()
+Application::Application() : player(this)
 {
 	initSDL();
 }
@@ -60,21 +60,6 @@ Application* Application::getInstace()
 
 void Application::run()
 {
-	/*
-	{
-		GameObject* go = new GameObject();
-
-		std::vector<Vector2> points;
-		points.push_back({ 10, 10 });
-		points.push_back({ 10, 60 });
-		points.push_back({ 60, 10 });
-
-		go->setPoints(points);
-		go->velocity = { 1.0, 1.0 };
-		
-		asteroids.push_back(go);
-	}
-	*/
 	spawnAsteroids();
 
 	if (!keepGameLoopAlive && SDL_WasInit(SDL_INIT_EVERYTHING) && window != nullptr && renderer != nullptr)
@@ -92,6 +77,12 @@ void Application::gameOver()
 {
 	// TODO game-over logic
 	std::cout << std::endl << "You got hit by and asteroid, game over!" << std::endl;
+}
+
+void Application::spawnBullet(Vector2 direction, Vector2 startPosition)
+{
+	PlayerBullet *bullet = new PlayerBullet(direction, startPosition);
+	playerBullets.push_back(*bullet);
 }
 
 void Application::runGameLoop()
@@ -150,6 +141,7 @@ const void Application::renderScene()
 	for (PlayerBullet& bullet : playerBullets)
 	{
 		bullet.draw(renderer);
+
 	}
 	
 	player.draw(renderer);

@@ -31,6 +31,7 @@ public:
 	void run();
 	void quit();
 	void gameOver();
+	void spawnBullet(Vector2 direction, Vector2 startPosition);
 private:
 	void runGameLoop();
 	const void renderScene();

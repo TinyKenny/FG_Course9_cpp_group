@@ -1,14 +1,14 @@
 #include "PlayerSpaceship.h"
-
 #include "InputHandler.h"
-
+#include "PlayerBullet.h"
+#include "Application.h"
 //#include <math.h>
 
 #define ROTATION_SPEED_RADIANS 0.8 * M_PI
 #define ACCELERATION 40.0
 //#define MAX_SPEED 50.0
 
-PlayerSpaceship::PlayerSpaceship() : GameObject()
+PlayerSpaceship::PlayerSpaceship(Application *application) : GameObject()
 {
 	position = { 100, 100 };
 
@@ -23,6 +23,8 @@ PlayerSpaceship::PlayerSpaceship() : GameObject()
 	setPoints(pointsToSet);
 
 	localToWorldMatrix.rotateByRadians(M_PI);
+
+	this->application = application;
 }
 
 void PlayerSpaceship::update(double dt)
@@ -43,7 +45,7 @@ void PlayerSpaceship::update(double dt)
 
 	if (InputHandler::getKeyHeld(SDLK_SPACE))
 	{
-		// TODO fire (how tho?)
+		application->spawnBullet(localToWorldMatrix.transformVector({ 0.0, 1.0 }), position);
 	}
 }
 
