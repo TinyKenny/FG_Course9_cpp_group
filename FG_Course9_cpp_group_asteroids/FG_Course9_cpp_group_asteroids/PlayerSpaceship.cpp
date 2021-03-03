@@ -2,6 +2,10 @@
 
 #include "InputHandler.h"
 
+//#include <math.h>
+
+#define ROTATION_SPEED_RADIANS 0.8 * M_PI
+
 PlayerSpaceship::PlayerSpaceship() : GameObject()
 {
 	position = { 100, 100 };
@@ -15,6 +19,8 @@ PlayerSpaceship::PlayerSpaceship() : GameObject()
 	pointsToSet.push_back({ -8.0, -10.0 });
 
 	setPoints(pointsToSet);
+
+	localToWorldMatrix.rotateByRadians(M_PI);
 }
 
 void PlayerSpaceship::update(double dt)
@@ -25,15 +31,31 @@ void PlayerSpaceship::update(double dt)
 	}
 	if (InputHandler::getKeyHeld(SDLK_d))
 	{
-		// TODO rotate clockwise
+		localToWorldMatrix.rotateByRadians(ROTATION_SPEED_RADIANS * dt);
 	}
 	if (InputHandler::getKeyHeld(SDLK_a))
 	{
-		// TODO rotate counter-clockwise
+		localToWorldMatrix.rotateByRadians(-ROTATION_SPEED_RADIANS * dt);
 	}
 
 	if (InputHandler::getKeyHeld(SDLK_SPACE))
 	{
 		// TODO fire (how tho?)
 	}
+}
+
+const std::vector<Vector2> PlayerSpaceship::getPoints()
+{
+	std::vector<Vector2> worldPoints;
+	worldPoints.reserve(points.size());
+
+	for (int i = 0; i < points.size(); i++)
+	{
+		Vector2 worldSpacePoint = localToWorldMatrix.transformVector(points[i]);
+		worldSpacePoint.x += position.x;
+		worldSpacePoint.y += position.y;
+		worldPoints.push_back(worldSpacePoint);
+	}
+
+	return worldPoints;
 }

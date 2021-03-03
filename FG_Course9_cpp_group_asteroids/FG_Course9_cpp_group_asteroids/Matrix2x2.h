@@ -5,9 +5,9 @@
 
 /*
 +---+---+
-|m00|m10|
+|m00|m01|
 +---+---+
-|m01|m11|
+|m10|m11|
 +---+---+
 
 formula: (might be wrong, idk im not a mathematician)
@@ -28,20 +28,20 @@ identity matrix:
 struct Matrix2x2
 {
 public:
-	void rotateByRadians(double angle);
-	Vector2 transformVector(Vector2 inVector);
+	void rotateByRadians(double angleRad);
+	Vector2 transformVector(const Vector2 inVector);
 private:
-	float m00 = 1.0f;
-	float m10 = 0.0f;
-	float m01 = 0.0f;
-	float m11 = 1.0f;
+	double m00 = 1.0f;
+	double m01 = 0.0f;
+	double m10 = 0.0f;
+	double m11 = 1.0f;
 };
 
 /*
 transformation matrix:
 
-xWorld = m00 * xIn + m10 * yIn
-yWorld = m01 * xIn + m11 * yIn
+xWorld = m00 * xIn + m01 * yIn
+yWorld = m10 * xIn + m11 * yIn
 
 */
 
