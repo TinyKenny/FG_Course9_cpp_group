@@ -74,7 +74,7 @@ void PhysicsSystem::wrapAround(GameObject& go, int windowWidth, int windowHeight
 
 	if (go.position.y >= windowHeight)
 	{
-		go.position.y -= windowWidth;
+		go.position.y -= windowHeight;
 	}
 	else if (go.position.y < 0)
 	{

@@ -11,7 +11,7 @@ PlayerBullet::PlayerBullet(Vector2 direction, Vector2 startPosition)
 
 	setPoints(points);
 
-	velocity = { (direction.x * bulletSpeed) , (direction.y * 5) };
+	velocity = { (direction.x * bulletSpeed) , (direction.y * bulletSpeed) };
 
 	position = startPosition;
 }
