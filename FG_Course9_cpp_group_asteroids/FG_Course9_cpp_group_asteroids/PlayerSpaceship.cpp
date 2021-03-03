@@ -5,6 +5,8 @@
 //#include <math.h>
 
 #define ROTATION_SPEED_RADIANS 0.8 * M_PI
+#define ACCELERATION 40.0
+//#define MAX_SPEED 50.0
 
 PlayerSpaceship::PlayerSpaceship() : GameObject()
 {
@@ -27,7 +29,10 @@ void PlayerSpaceship::update(double dt)
 {
 	if (InputHandler::getKeyHeld(SDLK_w))
 	{
-		// TODO accelerate
+		Vector2 accelerationVector = localToWorldMatrix.transformVector({ 0.0, ACCELERATION });
+		velocity.x += accelerationVector.x * dt;
+		velocity.y += accelerationVector.y * dt;
+		// TODO implement speed cap
 	}
 	if (InputHandler::getKeyHeld(SDLK_d))
 	{
