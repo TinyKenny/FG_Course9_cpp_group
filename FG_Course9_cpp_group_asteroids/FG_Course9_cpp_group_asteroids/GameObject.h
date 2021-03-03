@@ -16,8 +16,7 @@ public:
 	virtual void draw(SDL_Renderer* renderer);
 	void setPoints(std::vector<Vector2> pointsToSet);
 	const virtual std::vector<Vector2> getPoints();
-
-private:
+protected:
 	std::vector<Vector2> points;
 };
 
