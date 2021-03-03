@@ -1,9 +1,7 @@
 #include "PhysicsSystem.h"
 #include "Application.h"
 
-#include <iostream>
 #include <math.h>
-//#include <algorithm>
 
 #define MINIMUM_DENOMINATOR 0.00001f
 
@@ -31,16 +29,16 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 	wrapAround(player, app->WINDOW_WIDTH, app->WINDOW_HEIGHT);
 
 
-	
+	// TODO collision detection and movement should be combined in some clever way to ensure that objects "teleport through" asteroids
 	for (size_t iAsteroid = 0; iAsteroid < asteroids.size(); iAsteroid++)
 	{
 		bool asteroidHitByBullet = false;
-		// TODO check for collision with player bullets
+		
 		for (size_t iPlayerBullet = 0; !asteroidHitByBullet && iPlayerBullet < playerBullets.size(); iPlayerBullet++)
 		{
 			if (Vector2::sqrDistance(asteroids[iAsteroid].position, playerBullets[iPlayerBullet].position) < asteroids[iAsteroid].getCircleRadius() * asteroids[iAsteroid].getCircleRadius())
 			{
-				// TODO asteroid collides with bullet
+				// asteroid collides with bullet
 				asteroids[iAsteroid].DestroyAsteroid(app); // contains logic for splitting/destroying the asteroid in question
 				asteroidHitByBullet = true;
 			}
@@ -48,34 +46,21 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 
 		if (!asteroidHitByBullet)
 		{
-
 			float distanceForCircleCollision = player.getCircleRadius() + asteroids[iAsteroid].getCircleRadius();
 
 			if (Vector2::sqrDistance(player.position, asteroids[iAsteroid].position) < distanceForCircleCollision * distanceForCircleCollision)
 			{
-				// collision possible, check line intersection
 				if (checkLineShapeIntersection(player.getPoints(), asteroids[iAsteroid].getPoints()))
 				{
-					//app->gameOver();
-					//break;
+					// player and asteroid collides
+					app->gameOver();
+					// break;
 				}
-				else
-				{
-					//std::cout << "sphere but not line" << std::endl;
-				}
-				
 			}
 		}
 	}
-
-	// TODO loop through all asteroids to check if they get hit by any bullet or if they hit the player
-	// TODO do sphere-checks (using separating axis theorem) to determine if they are close enough to be able to collide
-	// if they are close enough to be able to collide, perform line intersection tests
-
-
-
 }
-//TODO: Magic numbers, fix if-statement cluster
+
 void PhysicsSystem::wrapAround(GameObject& go, int windowWidth, int windowHeight)
 {
 	if (go.position.x >= windowWidth)
@@ -97,8 +82,6 @@ void PhysicsSystem::wrapAround(GameObject& go, int windowWidth, int windowHeight
 	}
 }
 
-/*
-*/
 bool PhysicsSystem::checkLineShapeIntersection(const std::vector<Vector2>& shapeOnePoints, const std::vector<Vector2>& shapeTwoPoints)
 {
 	for (size_t iShapeOne = 0; iShapeOne < shapeOnePoints.size(); iShapeOne++)
@@ -119,13 +102,8 @@ bool PhysicsSystem::checkLineShapeIntersection(const std::vector<Vector2>& shape
 
 			float denominator = lineOneDirection.x * lineTwoDirection.y - lineTwoDirection.x * lineOneDirection.y;
 
-			if (std::abs(denominator) < lowestDenominator)
-			{
-				lowestDenominator = std::abs(denominator);
-			}
 			if (std::abs(denominator) < MINIMUM_DENOMINATOR)
 			{
-				//std::cout << "parallel" << std::endl;
 				continue;
 			}
 
@@ -136,17 +114,13 @@ bool PhysicsSystem::checkLineShapeIntersection(const std::vector<Vector2>& shape
 			{
 				continue;
 			}
-
 			float tTwo = (oneStartToTwoStart.x * lineOneDirection.y - lineOneDirection.x * oneStartToTwoStart.y) / denominator;
-			if (tTwo >= 0 || tTwo <= 1)
-			{
-				//std::cout << "(a) lowest denom: " << lowestDenominator << std::endl;
 
+			if (tTwo >= 0 && tTwo <= 1)
+			{
 				return true;
 			}
 		}
-
-		//std::cout << "(b) lowest denom: " << lowestDenominator << std::endl;
 	}
 
 	return false;
