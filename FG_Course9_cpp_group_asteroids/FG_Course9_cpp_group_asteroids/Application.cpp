@@ -112,7 +112,6 @@ void Application::runGameLoop()
 
 		while (accumulator >= dt)
 		{
-			//std::cout << "dt: " << std::to_string(dt) << std::endl;
 			player.update(dt);
 
 			PhysicsSystem::physicsUpdate(this, dt, asteroids, playerBullets, player);

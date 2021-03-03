@@ -7,8 +7,6 @@ PlayerBullet::PlayerBullet(Vector2 direction, Vector2 startPosition)
 	points.push_back({ 0, 0 });
 	points.push_back({0 , 0 });
 
-	std::cout << startPosition.x << ", " << startPosition.y << std::endl;
-
 	setPoints(points);
 
 	velocity = { (direction.x * bulletSpeed) , (direction.y * bulletSpeed) };
