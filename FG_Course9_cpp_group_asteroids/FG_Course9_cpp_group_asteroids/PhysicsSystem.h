@@ -20,7 +20,7 @@ public:
 	
 	static void wrapAround(GameObject &go, int windowWidth, int windowHeight);
 private:
-	//static bool checkLineShapeIntersection(std::vector<Vector2>& shapeOnePoints, std::vector<Vector2>& shapeTwoPoints);
+	static bool checkLineShapeIntersection(const std::vector<Vector2>& shapeOnePoints, const std::vector<Vector2>& shapeTwoPoints);
 };
 
 #endif // !PHYSICS_SYSTEM_H

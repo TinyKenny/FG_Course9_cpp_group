@@ -1,7 +1,11 @@
 #include "PhysicsSystem.h"
 #include "Application.h"
-#include <iostream>
 
+#include <iostream>
+#include <math.h>
+//#include <algorithm>
+
+#define MINIMUM_DENOMINATOR 0.00001f
 
 void PhysicsSystem::physicsUpdate(Application* app, double dt,
 								  std::vector<Asteroid>& asteroids,
@@ -28,16 +32,16 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 
 
 	
-	for (size_t i = 0; i < asteroids.size(); i++)
+	for (size_t iAsteroid = 0; iAsteroid < asteroids.size(); iAsteroid++)
 	{
 		bool asteroidHitByBullet = false;
 		// TODO check for collision with player bullets
-		for (size_t iPlayerBullet = 0; !asteroidHitByBullet && iPlayerBullet < playerBullets.size(); i++)
+		for (size_t iPlayerBullet = 0; !asteroidHitByBullet && iPlayerBullet < playerBullets.size(); iPlayerBullet++)
 		{
-			if (Vector2::sqrDistance(asteroids[i].position, playerBullets[iPlayerBullet].position) < asteroids[i].getCircleRadius() * asteroids[i].getCircleRadius())
+			if (Vector2::sqrDistance(asteroids[iAsteroid].position, playerBullets[iPlayerBullet].position) < asteroids[iAsteroid].getCircleRadius() * asteroids[iAsteroid].getCircleRadius())
 			{
 				// TODO asteroid collides with bullet
-				asteroids[i].DestroyAsteroid(app); // contains logic for splitting/destroying the asteroid in question
+				asteroids[iAsteroid].DestroyAsteroid(app); // contains logic for splitting/destroying the asteroid in question
 				asteroidHitByBullet = true;
 			}
 		}
@@ -45,13 +49,21 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 		if (!asteroidHitByBullet)
 		{
 
-			float distanceForCircleCollision = player.getCircleRadius() + asteroids[i].getCircleRadius();
+			float distanceForCircleCollision = player.getCircleRadius() + asteroids[iAsteroid].getCircleRadius();
 
-			if (Vector2::sqrDistance(player.position, asteroids[i].position) < distanceForCircleCollision * distanceForCircleCollision)
+			if (Vector2::sqrDistance(player.position, asteroids[iAsteroid].position) < distanceForCircleCollision * distanceForCircleCollision)
 			{
 				// collision possible, check line intersection
-				app->gameOver();
-				break;
+				if (checkLineShapeIntersection(player.getPoints(), asteroids[iAsteroid].getPoints()))
+				{
+					//app->gameOver();
+					//break;
+				}
+				else
+				{
+					//std::cout << "sphere but not line" << std::endl;
+				}
+				
 			}
 		}
 	}
@@ -86,20 +98,57 @@ void PhysicsSystem::wrapAround(GameObject& go, int windowWidth, int windowHeight
 }
 
 /*
-bool PhysicsSystem::checkLineShapeIntersection(std::vector<Vector2>& shapeOnePoints, std::vector<Vector2>& shapeTwoPoints)
+*/
+bool PhysicsSystem::checkLineShapeIntersection(const std::vector<Vector2>& shapeOnePoints, const std::vector<Vector2>& shapeTwoPoints)
 {
 	for (size_t iShapeOne = 0; iShapeOne < shapeOnePoints.size(); iShapeOne++)
 	{
-		Vector2 shapeOnePointOne = shapeOnePoints[iShapeOne];
-		Vector2 shapeOnePointTwo = shapeOnePoints[(iShapeOne + 1) % shapeOnePoints.size()];
+		Vector2 lineOneStart = shapeOnePoints[iShapeOne];
+		Vector2 lineOneEnd = shapeOnePoints[(iShapeOne + 1) % shapeOnePoints.size()];
+
+		Vector2 lineOneDirection = lineOneEnd - lineOneStart;
+
+		float lowestDenominator = 1000000.0f;
 
 		for (size_t iShapeTwo = 0; iShapeTwo < shapeTwoPoints.size(); iShapeTwo++)
 		{
-			
+			Vector2 lineTwoStart = shapeTwoPoints[iShapeTwo];
+			Vector2 lineTwoEnd = shapeTwoPoints[(iShapeTwo + 1) % shapeTwoPoints.size()];
+
+			Vector2 lineTwoDirection = lineTwoEnd - lineTwoStart;
+
+			float denominator = lineOneDirection.x * lineTwoDirection.y - lineTwoDirection.x * lineOneDirection.y;
+
+			if (std::abs(denominator) < lowestDenominator)
+			{
+				lowestDenominator = std::abs(denominator);
+			}
+			if (std::abs(denominator) < MINIMUM_DENOMINATOR)
+			{
+				//std::cout << "parallel" << std::endl;
+				continue;
+			}
+
+			Vector2 oneStartToTwoStart = lineTwoStart - lineOneStart;
+
+			float tOne = (oneStartToTwoStart.x * lineTwoDirection.y - lineTwoDirection.x * oneStartToTwoStart.y) / denominator;
+			if (tOne < 0 || tOne > 1)
+			{
+				continue;
+			}
+
+			float tTwo = (oneStartToTwoStart.x * lineOneDirection.y - lineOneDirection.x * oneStartToTwoStart.y) / denominator;
+			if (tTwo >= 0 || tTwo <= 1)
+			{
+				//std::cout << "(a) lowest denom: " << lowestDenominator << std::endl;
+
+				return true;
+			}
 		}
+
+		//std::cout << "(b) lowest denom: " << lowestDenominator << std::endl;
 	}
 
-	return true;
+	return false;
 }
-*/
 
