@@ -29,7 +29,7 @@ struct Matrix2x2
 {
 public:
 	void rotateByRadians(double angleRad);
-	Vector2 transformVector(const Vector2 inVector);
+	Vector2 transformVector(const Vector2 inVector) const;
 private:
 	double m00 = 1.0f;
 	double m01 = 0.0f;

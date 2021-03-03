@@ -9,6 +9,15 @@ GameObject::GameObject() : position({ 0.0f, 0.0f }), velocity({ 0.0f, 0.0f })
 void GameObject::setPoints(std::vector<Vector2> pointsToSet)
 {
 	points = pointsToSet;
+
+	for (size_t i = 0; i < points.size(); i++)
+	{
+		float distanceToCenter = points[i].magnitude();
+		if (distanceToCenter > circleRadius)
+		{
+			circleRadius = distanceToCenter;
+		}
+	}
 }
 
 void GameObject::draw(SDL_Renderer* renderer)
@@ -25,17 +34,18 @@ void GameObject::draw(SDL_Renderer* renderer)
 	}
 }
 
-const std::vector<Vector2> GameObject::getPoints()
+std::vector<Vector2> GameObject::getPoints() const
 {
 	std::vector<Vector2> worldPoints;
 	worldPoints.reserve(points.size());
 	for (int i = 0; i < points.size(); i++)
 	{
-		Vector2 worldSpacePoint;
-		// TODO apply rotation
-		worldSpacePoint.x = position.x + points[i].x;
-		worldSpacePoint.y = position.y + points[i].y;
-		worldPoints.push_back(worldSpacePoint);
+		worldPoints.push_back(position + points[i]);
 	}
 	return worldPoints;
+}
+
+float GameObject::getCircleRadius() const
+{
+	return circleRadius;
 }

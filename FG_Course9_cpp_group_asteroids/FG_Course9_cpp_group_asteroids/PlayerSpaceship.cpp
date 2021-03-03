@@ -29,9 +29,7 @@ void PlayerSpaceship::update(double dt)
 {
 	if (InputHandler::getKeyHeld(SDLK_w))
 	{
-		Vector2 accelerationVector = localToWorldMatrix.transformVector({ 0.0, ACCELERATION });
-		velocity.x += accelerationVector.x * dt;
-		velocity.y += accelerationVector.y * dt;
+		velocity += localToWorldMatrix.transformVector({ 0.0, (float)(ACCELERATION * dt) });
 		// TODO implement speed cap
 	}
 	if (InputHandler::getKeyHeld(SDLK_d))
@@ -49,7 +47,7 @@ void PlayerSpaceship::update(double dt)
 	}
 }
 
-const std::vector<Vector2> PlayerSpaceship::getPoints()
+std::vector<Vector2> PlayerSpaceship::getPoints() const
 {
 	std::vector<Vector2> worldPoints;
 	worldPoints.reserve(points.size());

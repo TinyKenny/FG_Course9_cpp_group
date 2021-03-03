@@ -8,28 +8,37 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 								  std::vector<PlayerBullet>& playerBullets,
 								  PlayerSpaceship& player)
 {
-	for (size_t i = 0; i < asteroids.size(); ++i)
+	for (size_t i = 0; i < asteroids.size(); i++)
 	{
-		asteroids[i].position.x += asteroids[i].velocity.x * dt;
-		asteroids[i].position.y += asteroids[i].velocity.y * dt;
+		asteroids[i].position += asteroids[i].velocity * dt;
 
 		wrapAround(asteroids[i], app->WINDOW_WIDTH, app->WINDOW_HEIGHT);
 	}
 
-	for (size_t i = 0; i < playerBullets.size(); ++i)
+	for (size_t i = 0; i < playerBullets.size(); i++)
 	{
-		playerBullets[i].position.x += playerBullets[i].velocity.x * dt;
-		playerBullets[i].position.y += playerBullets[i].velocity.y * dt;
+		playerBullets[i].position += playerBullets[i].velocity * dt;
 
 		wrapAround(playerBullets[i], app->WINDOW_WIDTH, app->WINDOW_HEIGHT);
 	}
 
-	player.position.x += player.velocity.x * dt;
-	player.position.y += player.velocity.y * dt;
+	player.position += player.velocity * dt;
 
 	wrapAround(player, app->WINDOW_WIDTH, app->WINDOW_HEIGHT);
 
+
 	
+	for (size_t i = 0; i < asteroids.size(); i++)
+	{
+		// TODO check for collision with player bullets
+
+		float distanceForCircleCollision = player.getCircleRadius() + asteroids[i].getCircleRadius();
+
+		if (Vector2::sqrDistance(player.position, asteroids[i].position) < distanceForCircleCollision * distanceForCircleCollision)
+		{
+			// collision possible, check line intersection
+		}
+	}
 
 	// TODO loop through all asteroids to check if they get hit by any bullet or if they hit the player
 	// TODO do sphere-checks (using separating axis theorem) to determine if they are close enough to be able to collide

@@ -11,7 +11,7 @@ class PlayerSpaceship :
 public:
     PlayerSpaceship();
     void update(double dt);
-    const std::vector<Vector2> getPoints() override;
+    std::vector<Vector2> getPoints() const override;
     // TODO player spaceship should have rotation
     // TODO player spaceship should have player controls
 private:

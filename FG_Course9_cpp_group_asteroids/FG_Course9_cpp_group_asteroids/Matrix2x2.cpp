@@ -24,7 +24,7 @@ void Matrix2x2::rotateByRadians(double angleRad)
 	m11 = m11Rotated;
 }
 
-Vector2 Matrix2x2::transformVector(const Vector2 inVector)
+Vector2 Matrix2x2::transformVector(const Vector2 inVector) const
 {
 	return {
 		(float)m00 * inVector.x + (float)m01 * inVector.y,
