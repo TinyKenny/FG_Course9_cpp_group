@@ -6,7 +6,7 @@ float Vector2::sqrDistance(const Vector2& lhs, const Vector2& rhs)
 {
 	float xPosDiff = lhs.x - rhs.x;
 	float yPosDiff = lhs.y - rhs.y;
-	return sqrtf(xPosDiff * xPosDiff + yPosDiff * yPosDiff);
+	return xPosDiff * xPosDiff + yPosDiff * yPosDiff;
 }
 
 float Vector2::magnitude() const
