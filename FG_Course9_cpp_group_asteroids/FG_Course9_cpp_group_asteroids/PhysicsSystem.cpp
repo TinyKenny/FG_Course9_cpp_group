@@ -50,6 +50,8 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 			if (Vector2::sqrDistance(player.position, asteroids[i].position) < distanceForCircleCollision * distanceForCircleCollision)
 			{
 				// collision possible, check line intersection
+				app->gameOver();
+				break;
 			}
 		}
 	}

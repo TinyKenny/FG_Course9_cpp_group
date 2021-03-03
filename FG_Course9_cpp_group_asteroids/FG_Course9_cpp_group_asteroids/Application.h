@@ -30,6 +30,7 @@ public:
 	static Application* getInstace();
 	void run();
 	void quit();
+	void gameOver();
 private:
 	void runGameLoop();
 	const void renderScene();

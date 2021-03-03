@@ -88,6 +88,12 @@ void Application::quit()
 	keepGameLoopAlive = false;
 }
 
+void Application::gameOver()
+{
+	// TODO game-over logic
+	std::cout << std::endl << "You got hit by and asteroid, game over!" << std::endl;
+}
+
 void Application::runGameLoop()
 {
 	if (keepGameLoopAlive)
@@ -115,7 +121,7 @@ void Application::runGameLoop()
 
 		while (accumulator >= dt)
 		{
-			std::cout << "dt: " << std::to_string(dt) << std::endl;
+			//std::cout << "dt: " << std::to_string(dt) << std::endl;
 			player.update(dt);
 
 			PhysicsSystem::physicsUpdate(this, dt, asteroids, playerBullets, player);
