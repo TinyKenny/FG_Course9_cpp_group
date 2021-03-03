@@ -1,13 +1,7 @@
 #include "Asteroid.h"
-#include "Application.h"
-#include "stdlib.h"
-#include <random>
-#include <time.h>
-#include <iostream>
 
-
-float xPos;
-float yPos;
+double xPos;
+double yPos;
 
 Asteroid::Asteroid(SDL_Window* window)
 {
@@ -25,7 +19,6 @@ Asteroid::Asteroid(SDL_Window* window)
 	points.push_back({ 5, -10 });
 	points.push_back({ 10, -5 });
 
-	//GameObject::velocity = { 100,100 };
 	setPoints(points);
 
 	generateSpawnPoint(window);
@@ -42,8 +35,8 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 	SDL_GetWindowSize(window, windowWidth, windowHeight);
 
 	
-	float val = (float)rand() / (float)RAND_MAX;
-	float modifier = (float)rand() / (float)RAND_MAX;
+	double val = (double)rand() / (double)RAND_MAX;
+	double modifier = (double)rand() / (double)RAND_MAX;
 
 	if (val > 0.5)
 	{
@@ -53,10 +46,10 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 		}
 		else
 		{
-			xPos = (float) *windowWidth;
+			xPos = (double) *windowWidth;
 		}
 
-		yPos = (float) *windowHeight * modifier;
+		yPos = (double) *windowHeight * modifier;
 	}
 	else
 	{
@@ -66,30 +59,29 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 		}
 		else
 		{
-			yPos = (float) *windowHeight;
+			yPos = (double) *windowHeight;
 		}
 
-		xPos = (float)*windowWidth * modifier;
+		xPos = (double)*windowWidth * modifier;
 	}
 
-
-	position = {xPos, yPos};
+	position = {(float)xPos, (float)yPos};
 	
 }
 
-//TODO: Magic numbers, refactor
+//TODO: FIX CASTING CLUSTERFUDGE, Magic numbers, refactor
 void Asteroid::generateVelocity(int min, int max)
 {
 	//get components for vector towards center
-	float centerVectorX = (*windowWidth / 2.0f) - (position.x);
-	float centerVectorY= (*windowHeight / 2.0f) - (position.y);
+	double centerVectorX = (*windowWidth / 2.0) - (position.x);
+	double centerVectorY= (*windowHeight / 2.0) - (position.y);
 
 	//get current magnitude
-	float magnitude = sqrt((centerVectorX * centerVectorX) + (centerVectorY * centerVectorY));
+	double magnitude = sqrt((centerVectorX * centerVectorX) + (centerVectorY * centerVectorY));
 
 	//deviate path from center by random degree
-	float val = (float)rand() / (float)RAND_MAX;
-	float modifier = (float)rand() / (float)RAND_MAX / 2;
+	double val = (double)rand() / (double)RAND_MAX;
+	float modifier = (double)rand() / (double)RAND_MAX / 2;
 
 	if (val > 0.5f)
 	{
@@ -105,13 +97,13 @@ void Asteroid::generateVelocity(int min, int max)
 	centerVectorY = centerVectorY / magnitude;
 
 	//generate new magnitude
-	magnitude = rand() % (max - min +1) + min;
+	magnitude = (double) (rand() % (max - min +1) )+ min;
 
 	//apply
 	centerVectorX *= magnitude;
 	centerVectorY *= magnitude;
 
 
-	GameObject::velocity = { centerVectorX,centerVectorY };
+	GameObject::velocity = { (float)centerVectorX,(float)centerVectorY };
 }
 

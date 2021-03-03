@@ -9,10 +9,13 @@
 
 #include <vector>
 
+
 class Application
 {
 public:
-	// public vars here
+	const int WINDOW_WIDTH = 600;
+	const int WINDOW_HEIGHT = 400;
+
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;

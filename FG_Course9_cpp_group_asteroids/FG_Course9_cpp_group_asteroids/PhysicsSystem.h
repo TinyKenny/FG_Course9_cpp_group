@@ -5,6 +5,7 @@
 #include "PlayerBullet.h"
 #include "PlayerSpaceship.h"
 
+
 #include <vector>
 
 class Application;
@@ -16,6 +17,8 @@ public:
 							  std::vector<Asteroid>& asteroids,
 							  std::vector<PlayerBullet>& playerBullets,
 							  PlayerSpaceship& player);
+	
+	static void wrapAround(GameObject &go, int windowWidth, int windowHeight);
 };
 
 #endif // !PHYSICS_SYSTEM_H
