@@ -29,7 +29,7 @@ Asteroid::Asteroid(SDL_Window* window)
 	setPoints(points);
 
 	generateSpawnPoint(window);
-	generateVelocity(30,100);
+	generateVelocity(20,200);
 }
 
 //TODO: Magic numbers, refactor
