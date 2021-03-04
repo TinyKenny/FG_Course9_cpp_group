@@ -16,10 +16,7 @@
 
 
 /* TODO
-replay
-asteroids should be destroyed when hit by bullets
 asteroid respawning
-player spaceship instantiate in middle of window
 (nice to have) bullets should do line collision test
 */
 

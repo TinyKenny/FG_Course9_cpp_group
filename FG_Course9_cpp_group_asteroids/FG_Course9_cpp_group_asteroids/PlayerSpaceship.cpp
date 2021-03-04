@@ -13,7 +13,7 @@ using namespace std::chrono;
 
 PlayerSpaceship::PlayerSpaceship(Application *application) : GameObject()
 {
-	position = { 100, 100 };
+	position = { (float) application->WINDOW_WIDTH / 2, (float) application->WINDOW_HEIGHT / 2 };
 
 	std::vector<Vector2> pointsToSet;
 
