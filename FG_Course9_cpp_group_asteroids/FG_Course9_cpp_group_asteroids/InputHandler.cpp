@@ -53,3 +53,10 @@ bool InputHandler::getKeyReleased(SDL_Keycode key)
 {
 	return keysReleased.count(key);
 }
+
+void InputHandler::clearAllKeys()
+{
+	keysDown.clear();
+	keysHeld.clear();
+	keysReleased.clear();
+}

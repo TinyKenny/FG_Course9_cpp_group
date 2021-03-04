@@ -14,6 +14,7 @@ public:
 	static bool getKeyDown(SDL_Keycode key);
 	static bool getKeyHeld(SDL_Keycode key);
 	static bool getKeyReleased(SDL_Keycode key);
+	static void clearAllKeys();
 private:
 	static std::set<SDL_Keycode> keysDown;
 	static std::set<SDL_Keycode> keysHeld;

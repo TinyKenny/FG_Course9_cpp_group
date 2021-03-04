@@ -40,6 +40,8 @@ void Application::initSDL()
 
 Application::~Application()
 {
+	InputHandler::clearAllKeys();
+
 	if (renderer != nullptr)
 	{
 		SDL_DestroyRenderer(renderer);
@@ -112,10 +114,11 @@ void Application::runGameLoop()
 		currentTime = newTime;
 		accumulator += frameTime;
 
-		InputHandler::updateInputs(this);
 
 		while (accumulator >= dt)
 		{
+			InputHandler::updateInputs(this);
+
 			player.update(dt);
 			updateBullets();
 
