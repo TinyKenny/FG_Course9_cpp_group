@@ -40,7 +40,6 @@ void PlayerSpaceship::update(double dt)
 	if (InputHandler::getKeyHeld(SDLK_w))
 	{
 		velocity += localToWorldMatrix.transformVector({ 0.0, (float)(ACCELERATION * dt) });
-		// TODO implement speed cap
 	}
 	if (InputHandler::getKeyHeld(SDLK_d))
 	{

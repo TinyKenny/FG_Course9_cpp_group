@@ -28,8 +28,6 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 
 	wrapAround(player, app->WINDOW_WIDTH, app->WINDOW_HEIGHT);
 
-
-	// TODO collision detection and movement should be combined in some clever way to ensure that objects "teleport through" asteroids
 	for (size_t iAsteroid = 0; iAsteroid < asteroids.size(); iAsteroid++)
 	{
 		bool asteroidHitByBullet = false;

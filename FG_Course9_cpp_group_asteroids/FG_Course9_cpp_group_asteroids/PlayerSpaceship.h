@@ -13,8 +13,6 @@ public:
     PlayerSpaceship(Application *application);
     void update(double dt);
     std::vector<Vector2> getPoints() const override;
-    // TODO player spaceship should have rotation
-    // TODO player spaceship should have player controls
 
 public:
     Application *application;
