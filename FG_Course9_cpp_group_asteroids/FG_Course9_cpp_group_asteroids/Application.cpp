@@ -185,4 +185,9 @@ void Application::DestroyAsteroid(Asteroid* asteroid)
 			asteroids.erase(asteroids.begin() + i);
 		}
 	}
+
+	if (asteroids.size() == 0)
+	{
+		spawnAsteroids();
+	}
 }
