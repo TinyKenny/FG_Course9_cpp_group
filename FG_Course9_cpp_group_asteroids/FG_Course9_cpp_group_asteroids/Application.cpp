@@ -78,6 +78,7 @@ void Application::gameOver()
 {
 	// TODO game-over logic
 	std::cout << std::endl << "You got hit by and asteroid, game over!" << std::endl;
+	
 }
 
 void Application::spawnBullet(Vector2 direction, Vector2 startPosition)
@@ -169,6 +170,7 @@ void Application::updateBullets()
 		if (!isAlive)
 		{
 			playerBullets.erase(playerBullets.begin()+i);
+			i--;
 		}
 	}
 }

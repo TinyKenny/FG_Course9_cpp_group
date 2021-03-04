@@ -9,36 +9,25 @@
 
 #include "Application.h"
 
+#include <iostream>
+#include <string>
+
+
+
+/* TODO
+replay
+asteroids should be destroyed when hit by bullets
+actual game over when player is hit by an asteroid
+asteroid respawning
+(nice to have) bullets should do line collision test
+*/
+
 int main(int argc, char** argv)
 {
-	/*
-	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
-	{
-		std::cout << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	SDL_Window* window = SDL_CreateWindow("Match 3", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 400, SDL_WINDOW_SHOWN);
-	if (window == nullptr)
-	{
-		std::cout << SDL_GetError() << std::endl;
-		return false;
-	}
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (renderer == nullptr)
-	{
-		std::cout << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-
-	SDL_Quit();
-	*/
 
 	Application* myApp = Application::getInstace();
 	myApp->run();
+	delete myApp;
 
 	return 0;
 }
