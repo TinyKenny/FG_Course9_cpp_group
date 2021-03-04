@@ -2,6 +2,7 @@
 
 #include "Application.h"
 
+
 double xPos;
 double yPos;
 
@@ -29,8 +30,7 @@ Asteroid::Asteroid(SDL_Window* window)
 
 void Asteroid::DestroyAsteroid(Application* app)
 {
-	// pointer to app needed to remove this instance from the list and add smaller asteroids to the list
-	// TODO asteroid destruction logic
+	app->DestroyAsteroid(this);
 }
 
 //TODO: Magic numbers, refactor

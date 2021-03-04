@@ -15,7 +15,6 @@ private:
 	int* windowWidth;
 	int* windowHeight;
 
-
 private:
 	void generateSpawnPoint(SDL_Window* window);
 	void generateVelocity(int min, int max);

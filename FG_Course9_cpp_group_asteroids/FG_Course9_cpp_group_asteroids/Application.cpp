@@ -155,7 +155,6 @@ const void Application::renderScene()
 
 void Application::spawnAsteroids()
 {
-	//Asteroid *ast = new Asteroid();
 	asteroids.push_back(Asteroid(window));
 	asteroids.push_back(Asteroid(window));
 	asteroids.push_back(Asteroid(window));
@@ -172,6 +171,21 @@ void Application::updateBullets()
 		if (!isAlive)
 		{
 			playerBullets.erase(playerBullets.begin()+i);
+			i--;
+		}
+	}
+}
+
+void Application::DestroyAsteroid(Asteroid* asteroid)
+{
+	for (int i = 0; i < asteroids.size(); i++)
+	{
+		//std::cout << asteroid << std::endl;
+		//std::cout << (&asteroids[i]) << std::endl;
+
+		if (&asteroids[i] == asteroid)
+		{
+			asteroids.erase(asteroids.begin() + i);
 			i--;
 		}
 	}
