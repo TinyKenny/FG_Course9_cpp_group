@@ -81,8 +81,8 @@ void Application::gameOver()
 
 void Application::spawnBullet(Vector2 direction, Vector2 startPosition)
 {
-	PlayerBullet *bullet = new PlayerBullet(direction, startPosition);
-	playerBullets.push_back(*bullet);
+	PlayerBullet bullet(direction, startPosition);
+	playerBullets.push_back(bullet);
 }
 
 void Application::runGameLoop()

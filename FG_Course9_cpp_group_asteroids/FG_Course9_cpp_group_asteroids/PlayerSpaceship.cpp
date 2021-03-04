@@ -2,11 +2,14 @@
 #include "InputHandler.h"
 #include "PlayerBullet.h"
 #include "Application.h"
+#include <chrono>
 //#include <math.h>
 
 #define ROTATION_SPEED_RADIANS 0.8 * M_PI
 #define ACCELERATION 40.0
 //#define MAX_SPEED 50.0
+
+using namespace std::chrono;
 
 PlayerSpaceship::PlayerSpaceship(Application *application) : GameObject()
 {
@@ -29,6 +32,11 @@ PlayerSpaceship::PlayerSpaceship(Application *application) : GameObject()
 
 void PlayerSpaceship::update(double dt)
 {
+	if (fireCooldownTimer > 0)
+	{
+		fireCooldownTimer -= dt;
+	}
+
 	if (InputHandler::getKeyHeld(SDLK_w))
 	{
 		velocity += localToWorldMatrix.transformVector({ 0.0, (float)(ACCELERATION * dt) });
@@ -45,8 +53,16 @@ void PlayerSpaceship::update(double dt)
 
 	if (InputHandler::getKeyHeld(SDLK_SPACE))
 	{
+		if (fireCooldownTimer > 0)
+		{
+			return;
+		}
+
+		fireCooldownTimer += fireCooldown;
+
 		application->spawnBullet(localToWorldMatrix.transformVector({ 0.0, 1.0 }), position);
 	}
+
 }
 
 std::vector<Vector2> PlayerSpaceship::getPoints() const

@@ -15,10 +15,13 @@ public:
     std::vector<Vector2> getPoints() const override;
     // TODO player spaceship should have rotation
     // TODO player spaceship should have player controls
+
 public:
     Application *application;
 private:
     Matrix2x2 localToWorldMatrix;
+    const double fireCooldown = 0.3f;
+    double fireCooldownTimer = 0.0f;
 };
 
 #endif // !PLAYER_SPACESHIP_H
