@@ -1,28 +1,17 @@
-/*
-#include "iostream"
-#include <memory>
-#include <map>
-#include <algorithm>
-
-#include "SDL.h"
-*/
-
 #include "Application.h"
 
 #include <iostream>
 #include <string>
-//#include <random>
 
 
 
 /* TODO
-asteroid respawning
 (nice to have) bullets should do line collision test
 */
 
 int main(int argc, char** argv)
 {
-	//srand(time(NULL));
+	srand(time(NULL));
 
 	bool playGame = true;
 	while (playGame)
