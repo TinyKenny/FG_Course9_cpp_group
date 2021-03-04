@@ -3,12 +3,6 @@
 #include <iostream>
 #include <string>
 
-
-
-/* TODO
-(nice to have) bullets should do line collision test
-*/
-
 int main(int argc, char** argv)
 {
 	srand(time(NULL));

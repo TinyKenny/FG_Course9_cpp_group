@@ -21,7 +21,6 @@ void Application::initSDL()
 		return;
 	}
 
-	// TODO not have hard-coded name and window size
 	window = SDL_CreateWindow("Asteroids", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	if (window == nullptr)
 	{
