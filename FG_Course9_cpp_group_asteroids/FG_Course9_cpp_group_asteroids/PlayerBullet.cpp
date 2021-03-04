@@ -15,7 +15,7 @@ PlayerBullet::PlayerBullet(Vector2 direction, Vector2 startPosition)
 	position = startPosition;
 }
 
-bool PlayerBullet::update(double dt)
+bool PlayerBullet::updateLifetime(double dt)
 {
 	secondsActive += dt;
 

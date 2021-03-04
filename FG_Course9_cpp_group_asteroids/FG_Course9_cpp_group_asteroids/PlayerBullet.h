@@ -8,7 +8,7 @@ class PlayerBullet :
 {
 public: 
     PlayerBullet(Vector2 direction, Vector2 startPosition);
-    bool update(double dt);
+    bool updateLifetime(double dt);
 
 private:
     float bulletSpeed = 300.0f;

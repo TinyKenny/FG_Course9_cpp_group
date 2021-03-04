@@ -164,11 +164,11 @@ void Application::updateBullets()
 {
 	for (int i = 0; i < playerBullets.size(); i++)
 	{
-		bool isAlive = playerBullets[i].update(dt);
+		bool isAlive = playerBullets[i].updateLifetime(dt);
 
 		if (!isAlive)
 		{
-			playerBullets.erase(playerBullets.begin());
+			playerBullets.erase(playerBullets.begin()+i);
 		}
 	}
 }
