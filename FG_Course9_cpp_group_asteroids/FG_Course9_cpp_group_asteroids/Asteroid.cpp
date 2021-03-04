@@ -1,10 +1,5 @@
 #include "Asteroid.h"
-
 #include "Application.h"
-
-
-double xPos;
-double yPos;
 
 Asteroid::Asteroid(SDL_Window* window)
 {
@@ -25,7 +20,7 @@ Asteroid::Asteroid(SDL_Window* window)
 	setPoints(points);
 
 	generateSpawnPoint(window);
-	generateVelocity(20,200);
+	generateVelocity();
 }
 
 void Asteroid::DestroyAsteroid(Application* app)
@@ -33,7 +28,6 @@ void Asteroid::DestroyAsteroid(Application* app)
 	app->DestroyAsteroid(this);
 }
 
-//TODO: Magic numbers, refactor
 void Asteroid::generateSpawnPoint(SDL_Window* window)
 {
 	windowWidth = new int();
@@ -74,11 +68,9 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 	}
 
 	position = {(float)xPos, (float)yPos};
-	
 }
 
-//TODO: FIX CASTING CLUSTERFUDGE, Magic numbers, refactor
-void Asteroid::generateVelocity(int min, int max)
+void Asteroid::generateVelocity()
 {
 	//get components for vector towards center
 	double centerVectorX = (*windowWidth / 2.0) - (position.x);
@@ -89,7 +81,7 @@ void Asteroid::generateVelocity(int min, int max)
 
 	//deviate path from center by random degree
 	double val = (double)rand() / (double)RAND_MAX;
-	float modifier = (double)rand() / (double)RAND_MAX / 2;
+	double modifier = (double)rand() / (double)RAND_MAX / 2;
 
 	if (val > 0.5f)
 	{
@@ -100,17 +92,19 @@ void Asteroid::generateVelocity(int min, int max)
 		centerVectorY += modifier * magnitude;
 	}
 
+	//get modified magnitude
+	double newMagnitude = sqrt((centerVectorX * centerVectorX) + (centerVectorY * centerVectorY));
+
 	//normalize components
-	centerVectorX = centerVectorX / magnitude;
-	centerVectorY = centerVectorY / magnitude;
+	centerVectorX = centerVectorX / newMagnitude;
+	centerVectorY = centerVectorY / newMagnitude;
 
 	//generate new magnitude
-	magnitude = (double) (rand() % (max - min +1) )+ min;
+	magnitude = (double) (rand() % (maxVelocity - minVelocity +1) )+ minVelocity;
 
 	//apply
 	centerVectorX *= magnitude;
 	centerVectorY *= magnitude;
-
 
 	GameObject::velocity = { (float)centerVectorX,(float)centerVectorY };
 }

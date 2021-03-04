@@ -14,10 +14,14 @@ public:
 private:
 	int* windowWidth;
 	int* windowHeight;
+	double xPos;
+	double yPos;
+	int maxVelocity = 20;
+	int minVelocity = 100;
 
 private:
 	void generateSpawnPoint(SDL_Window* window);
-	void generateVelocity(int min, int max);
+	void generateVelocity();
 };
 
 #endif // ASTEROID_H
