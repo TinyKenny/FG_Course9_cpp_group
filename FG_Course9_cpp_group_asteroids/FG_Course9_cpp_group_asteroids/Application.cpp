@@ -180,13 +180,9 @@ void Application::DestroyAsteroid(Asteroid* asteroid)
 {
 	for (int i = 0; i < asteroids.size(); i++)
 	{
-		//std::cout << asteroid << std::endl;
-		//std::cout << (&asteroids[i]) << std::endl;
-
 		if (&asteroids[i] == asteroid)
 		{
 			asteroids.erase(asteroids.begin() + i);
-			i--;
 		}
 	}
 }
