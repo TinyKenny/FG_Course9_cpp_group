@@ -76,9 +76,11 @@ void Application::quit()
 
 void Application::gameOver()
 {
-	// TODO game-over logic
-	std::cout << std::endl << "You got hit by and asteroid, game over!" << std::endl;
-	
+	if (keepGameLoopAlive) // prevent multiple game-over messages being printed by colliding with multiple asteroids in the same update
+	{
+		std::cout << std::endl << "You got hit by and asteroid, game over!" << std::endl;
+	}
+	quit();
 }
 
 void Application::spawnBullet(Vector2 direction, Vector2 startPosition)
