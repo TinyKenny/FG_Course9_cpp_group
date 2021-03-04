@@ -20,7 +20,7 @@ public:
     Application *application;
 private:
     Matrix2x2 localToWorldMatrix;
-    const double fireCooldown = 0.3f;
+    const double fireRate = 0.3f;
     double fireCooldownTimer = 0.0f;
 };
 
