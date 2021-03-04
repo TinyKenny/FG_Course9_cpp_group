@@ -30,11 +30,7 @@ void Asteroid::DestroyAsteroid(Application* app)
 
 void Asteroid::generateSpawnPoint(SDL_Window* window)
 {
-	windowWidth = new int();
-	windowHeight = new int();
-
-
-	SDL_GetWindowSize(window, windowWidth, windowHeight);
+	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
 	
 	double val = (double)rand() / (double)RAND_MAX;
@@ -48,10 +44,10 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 		}
 		else
 		{
-			xPos = (double) *windowWidth;
+			xPos = (double) windowWidth;
 		}
 
-		yPos = (double) *windowHeight * modifier;
+		yPos = (double) windowHeight * modifier;
 	}
 	else
 	{
@@ -61,10 +57,10 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 		}
 		else
 		{
-			yPos = (double) *windowHeight;
+			yPos = (double) windowHeight;
 		}
 
-		xPos = (double)*windowWidth * modifier;
+		xPos = (double) windowWidth * modifier;
 	}
 
 	position = {(float)xPos, (float)yPos};
@@ -73,8 +69,8 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 void Asteroid::generateVelocity()
 {
 	//get components for vector towards center
-	double centerVectorX = (*windowWidth / 2.0) - (position.x);
-	double centerVectorY= (*windowHeight / 2.0) - (position.y);
+	double centerVectorX = (windowWidth / 2.0) - (position.x);
+	double centerVectorY= (windowHeight / 2.0) - (position.y);
 
 	//get current magnitude
 	double magnitude = sqrt((centerVectorX * centerVectorX) + (centerVectorY * centerVectorY));

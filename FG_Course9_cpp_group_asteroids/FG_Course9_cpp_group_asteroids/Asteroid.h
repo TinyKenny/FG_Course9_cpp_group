@@ -12,8 +12,8 @@ public:
 	void DestroyAsteroid(Application* app);
 
 private:
-	int* windowWidth;
-	int* windowHeight;
+	int windowWidth;
+	int windowHeight;
 	double xPos;
 	double yPos;
 	int maxVelocity = 20;
