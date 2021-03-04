@@ -58,7 +58,7 @@ void PlayerSpaceship::update(double dt)
 			return;
 		}
 
-		fireCooldownTimer += fireCooldown;
+		fireCooldownTimer += fireRate;
 
 		application->spawnBullet(localToWorldMatrix.transformVector({ 0.0, 1.0 }), position);
 	}

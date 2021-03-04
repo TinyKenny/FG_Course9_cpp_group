@@ -23,8 +23,8 @@ private:
 	std::vector<Asteroid> asteroids;
 	std::vector<PlayerBullet> playerBullets;
 	PlayerSpaceship player;
-	Application(); // made this private to prevent stack-allocated Application-objects
-	void initSDL();
+	double dt;
+
 public:
 	~Application();
 	static Application* getInstace();
@@ -32,10 +32,14 @@ public:
 	void quit();
 	void gameOver();
 	void spawnBullet(Vector2 direction, Vector2 startPosition);
+
 private:
 	void runGameLoop();
 	const void renderScene();
 	void spawnAsteroids();
+	Application(); // made this private to prevent stack-allocated Application-objects
+	void initSDL();
+	void updateBullets();
 };
 
 #endif // !APPLICATION_H

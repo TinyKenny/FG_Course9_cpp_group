@@ -37,6 +37,7 @@ void Application::initSDL()
 	}
 }
 
+
 Application::~Application()
 {
 	if (renderer != nullptr)
@@ -97,7 +98,7 @@ void Application::runGameLoop()
 	using namespace std::chrono;
 
 	double t = 0.0; // time since start
-	double dt = 1.0 / 60.0; // desired update rate
+	dt = 1.0 / 60.0; // desired update rate
 	double accumulator = 0.0;
 	steady_clock::time_point currentTime = steady_clock::now();
 
@@ -113,12 +114,14 @@ void Application::runGameLoop()
 		while (accumulator >= dt)
 		{
 			player.update(dt);
+			updateBullets();
 
 			PhysicsSystem::physicsUpdate(this, dt, asteroids, playerBullets, player);
 
 			accumulator -= dt;
 			t += dt;
 		}
+
 
 		renderScene();
 	}
@@ -140,7 +143,6 @@ const void Application::renderScene()
 	for (PlayerBullet& bullet : playerBullets)
 	{
 		bullet.draw(renderer);
-
 	}
 	
 	player.draw(renderer);
@@ -155,7 +157,18 @@ void Application::spawnAsteroids()
 	asteroids.push_back(Asteroid(window));
 	asteroids.push_back(Asteroid(window));
 	asteroids.push_back(Asteroid(window));
+}
 
 
+void Application::updateBullets()
+{
+	for (int i = 0; i < playerBullets.size(); i++)
+	{
+		bool isAlive = playerBullets[i].update(dt);
 
+		if (!isAlive)
+		{
+			playerBullets.erase(playerBullets.begin());
+		}
+	}
 }

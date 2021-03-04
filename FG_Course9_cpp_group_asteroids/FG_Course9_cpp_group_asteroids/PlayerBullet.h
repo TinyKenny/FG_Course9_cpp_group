@@ -8,9 +8,13 @@ class PlayerBullet :
 {
 public: 
     PlayerBullet(Vector2 direction, Vector2 startPosition);
+    bool update(double dt);
 
 private:
-    const float bulletSpeed = 300.0f;
+    float bulletSpeed = 300.0f;
+    double lifeTime = 1.2;
+    double secondsActive = 0.0;
+
 };
 
 #endif // !PLAYER_BULLET_H
