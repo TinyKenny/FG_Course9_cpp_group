@@ -78,7 +78,7 @@ void Application::gameOver()
 {
 	if (keepGameLoopAlive) // prevent multiple game-over messages being printed by colliding with multiple asteroids in the same update
 	{
-		std::cout << std::endl << "You got hit by and asteroid, game over!" << std::endl;
+		std::cout << std::endl << "You got hit by an asteroid, game over!" << std::endl;
 	}
 	quit();
 }
