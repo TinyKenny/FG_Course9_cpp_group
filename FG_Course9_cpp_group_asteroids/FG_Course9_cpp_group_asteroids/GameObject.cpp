@@ -38,7 +38,7 @@ std::vector<Vector2> GameObject::getPoints() const
 {
 	std::vector<Vector2> worldPoints;
 	worldPoints.reserve(points.size());
-	for (int i = 0; i < points.size(); i++)
+	for (size_t i = 0; i < points.size(); i++)
 	{
 		worldPoints.push_back(position + points[i]);
 	}

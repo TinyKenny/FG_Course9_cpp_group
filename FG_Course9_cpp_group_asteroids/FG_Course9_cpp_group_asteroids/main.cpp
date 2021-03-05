@@ -5,12 +5,16 @@
 
 int main(int argc, char** argv)
 {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
+	Window* myWindow = Window::getInstance();
+
+	// TODO create window
+	
 	bool playGame = true;
 	while (playGame)
 	{
-		Application* myApp = Application::getInstace();
+		Application* myApp = Application::getInstace(myWindow);
 		myApp->run();
 		delete myApp;
 
@@ -37,6 +41,55 @@ int main(int argc, char** argv)
 			}
 		}
 	}
+
+	delete myWindow;
+
+
+
+	
+	/*
+	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
+	{
+		std::cout << SDL_GetError() << std::endl;
+	}
+	SDL_Window* window = SDL_CreateWindow("Asteroids", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 400, SDL_WINDOW_SHOWN);
+	if (window == nullptr)
+	{
+		std::cout << SDL_GetError() << std::endl;
+	}
+	
+
+	int iterations = 1000000;
+	std::string playerInput;
+	std::getline(std::cin, playerInput);
+	std::cout << "begin" << std::endl;
+
+	for (int i = 0; i < iterations; i++)
+	{
+		SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		if (renderer == nullptr)
+		{
+			std::cout << SDL_GetError() << std::endl;
+		}
+		if (renderer != nullptr)
+		{
+			SDL_DestroyRenderer(renderer);
+		}
+	}
+
+	std::cout << "end" << std::endl;
+	std::getline(std::cin, playerInput);
+
+	if (window != nullptr)
+	{
+		SDL_DestroyWindow(window);
+	}
+	if (SDL_WasInit(SDL_INIT_EVERYTHING))
+	{
+		SDL_Quit();
+	}
+	*/
+
 
 	return 0;
 }

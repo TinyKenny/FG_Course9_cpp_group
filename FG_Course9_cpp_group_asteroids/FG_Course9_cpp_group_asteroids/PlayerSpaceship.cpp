@@ -13,7 +13,6 @@ using namespace std::chrono;
 
 PlayerSpaceship::PlayerSpaceship(Application *application) : GameObject()
 {
-	position = { (float) application->WINDOW_WIDTH / 2, (float) application->WINDOW_HEIGHT / 2 };
 
 	std::vector<Vector2> pointsToSet;
 
@@ -25,9 +24,15 @@ PlayerSpaceship::PlayerSpaceship(Application *application) : GameObject()
 
 	setPoints(pointsToSet);
 
-	localToWorldMatrix.rotateByRadians(M_PI);
-
 	this->application = application;
+
+	resetPositionAndRotation();
+}
+
+void PlayerSpaceship::resetPositionAndRotation()
+{
+	position = { (float)(WINDOW_WIDTH / 2), (float)(WINDOW_HEIGHT / 2) };
+	localToWorldMatrix.rotateByRadians(M_PI);
 }
 
 void PlayerSpaceship::update(double dt)
@@ -69,7 +74,7 @@ std::vector<Vector2> PlayerSpaceship::getPoints() const
 	std::vector<Vector2> worldPoints;
 	worldPoints.reserve(points.size());
 
-	for (int i = 0; i < points.size(); i++)
+	for (size_t i = 0; i < points.size(); i++)
 	{
 		Vector2 worldSpacePoint = localToWorldMatrix.transformVector(points[i]);
 		worldSpacePoint.x += position.x;

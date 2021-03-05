@@ -8,19 +8,17 @@ class Application;
 class Asteroid : public GameObject
 {
 public:
-	Asteroid(SDL_Window* window);
+	Asteroid();
 	void DestroyAsteroid(Application* app);
 
 private:
-	int windowWidth;
-	int windowHeight;
 	double xPos;
 	double yPos;
 	int maxVelocity = 10;
 	int minVelocity = 60;
 
 private:
-	void generateSpawnPoint(SDL_Window* window);
+	void generateSpawnPoint();
 	void generateVelocity();
 };
 

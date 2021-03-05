@@ -161,6 +161,7 @@
     <ClCompile Include="PlayerBullet.cpp" />
     <ClCompile Include="PlayerSpaceship.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="PlayerBullet.h" />
     <ClInclude Include="PlayerSpaceship.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,19 +14,19 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 	{
 		asteroids[i].position += asteroids[i].velocity * dt;
 
-		wrapAround(asteroids[i], app->WINDOW_WIDTH, app->WINDOW_HEIGHT);
+		wrapAround(asteroids[i], WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
 	for (size_t i = 0; i < playerBullets.size(); i++)
 	{
 		playerBullets[i].position += playerBullets[i].velocity * dt;
 
-		wrapAround(playerBullets[i], app->WINDOW_WIDTH, app->WINDOW_HEIGHT);
+		wrapAround(playerBullets[i], WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
 	player.position += player.velocity * dt;
 
-	wrapAround(player, app->WINDOW_WIDTH, app->WINDOW_HEIGHT);
+	wrapAround(player, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	for (size_t iAsteroid = 0; iAsteroid < asteroids.size(); iAsteroid++)
 	{

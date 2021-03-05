@@ -8,70 +8,50 @@
 #include <string>
 
 
-Application::Application() : player(this)
+
+Application::Application(Window* window) : player(this), dt(1.0 / 60.0)
 {
-	initSDL();
-}
-
-void Application::initSDL()
-{
-	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
-	{
-		std::cout << SDL_GetError() << std::endl;
-		return;
-	}
-
-	window = SDL_CreateWindow("Asteroids", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-	if (window == nullptr)
-	{
-		std::cout << SDL_GetError() << std::endl;
-		return;
-	}
-
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (renderer == nullptr)
-	{
-		std::cout << SDL_GetError() << std::endl;
-		return;
-	}
+	myWindow = window;
+	renderer = window->getRenderer();
 }
 
 
 Application::~Application()
 {
-	InputHandler::clearAllKeys();
 
-	if (renderer != nullptr)
-	{
-		SDL_DestroyRenderer(renderer);
-	}
-	if (window != nullptr)
-	{
-		SDL_DestroyWindow(window);
-	}
-	if (SDL_WasInit(SDL_INIT_EVERYTHING))
-	{
-		SDL_Quit();
-	}
 }
 
-Application* Application::getInstace()
+Application* Application::getInstace(Window* window)
 {
-	return new Application();
+	if (window == nullptr)
+	{
+		std::cout << "instantiation of application with nullptr window attempted, returning nullptr" << std::endl;
+		return nullptr;
+	}
+	return new Application(window);
 }
 
 void Application::run()
 {
-	spawnAsteroids();
-
-	if (!keepGameLoopAlive && SDL_WasInit(SDL_INIT_EVERYTHING) && window != nullptr && renderer != nullptr)
+	if (!keepApplicationAlive)
 	{
-		runGameLoop();
+		keepApplicationAlive = true;
+
+		while (keepApplicationAlive)
+		{
+			GameplayState();
+
+			if (keepApplicationAlive)
+			{
+				gameOverState();
+			}
+		}
 	}
 }
 
 void Application::quit()
 {
+	keepApplicationAlive = false;
 	keepGameLoopAlive = false;
 }
 
@@ -81,7 +61,7 @@ void Application::gameOver()
 	{
 		std::cout << std::endl << "You got hit by an asteroid, game over!" << std::endl;
 	}
-	quit();
+	keepGameLoopAlive = false;
 }
 
 void Application::spawnBullet(Vector2 direction, Vector2 startPosition)
@@ -90,7 +70,23 @@ void Application::spawnBullet(Vector2 direction, Vector2 startPosition)
 	playerBullets.push_back(bullet);
 }
 
-void Application::runGameLoop()
+void Application::DestroyAsteroid(Asteroid* asteroid)
+{
+	for (size_t i = 0; i < asteroids.size(); i++)
+	{
+		if (&asteroids[i] == asteroid)
+		{
+			asteroids.erase(asteroids.begin() + i);
+		}
+	}
+
+	if (asteroids.size() == 0)
+	{
+		spawnAsteroids();
+	}
+}
+
+void Application::GameplayState()
 {
 	if (keepGameLoopAlive)
 	{
@@ -102,9 +98,12 @@ void Application::runGameLoop()
 	using namespace std::chrono;
 
 	double t = 0.0; // time since start
-	dt = 1.0 / 60.0; // desired update rate
+	//dt = 1.0 / 60.0; // desired update rate
 	double accumulator = 0.0;
 	steady_clock::time_point currentTime = steady_clock::now();
+	
+	player.resetPositionAndRotation();
+	spawnAsteroids();
 
 	while (keepGameLoopAlive)
 	{
@@ -127,9 +126,11 @@ void Application::runGameLoop()
 			t += dt;
 		}
 
-
 		renderScene();
 	}
+
+	asteroids.clear();
+	playerBullets.clear();
 }
 
 
@@ -157,16 +158,16 @@ const void Application::renderScene()
 
 void Application::spawnAsteroids()
 {
-	asteroids.push_back(Asteroid(window));
-	asteroids.push_back(Asteroid(window));
-	asteroids.push_back(Asteroid(window));
-	asteroids.push_back(Asteroid(window));
+	asteroids.push_back(Asteroid());
+	asteroids.push_back(Asteroid());
+	asteroids.push_back(Asteroid());
+	asteroids.push_back(Asteroid());
 }
 
 
 void Application::updateBullets()
 {
-	for (int i = 0; i < playerBullets.size(); i++)
+	for (size_t i = 0; i < playerBullets.size(); i++)
 	{
 		bool isAlive = playerBullets[i].updateLifetime(dt);
 
@@ -178,18 +179,11 @@ void Application::updateBullets()
 	}
 }
 
-void Application::DestroyAsteroid(Asteroid* asteroid)
+void Application::gameOverState()
 {
-	for (int i = 0; i < asteroids.size(); i++)
-	{
-		if (&asteroids[i] == asteroid)
-		{
-			asteroids.erase(asteroids.begin() + i);
-		}
-	}
+	// TODO game over state
 
-	if (asteroids.size() == 0)
-	{
-		spawnAsteroids();
-	}
+	// TODO display game over text
+	// TODO listen for player input
+	keepApplicationAlive = false;
 }

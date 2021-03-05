@@ -3,11 +3,11 @@
 
 #include <set>
 
-#include "SDL.h"
+#include <SDL.h>
 
 class Application;
 
-static class InputHandler
+class InputHandler
 {
 public:
 	static void updateInputs(Application* app);

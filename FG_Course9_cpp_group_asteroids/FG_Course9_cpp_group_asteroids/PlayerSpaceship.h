@@ -11,6 +11,7 @@ class PlayerSpaceship :
 {
 public:
     PlayerSpaceship(Application *application);
+    void resetPositionAndRotation();
     void update(double dt);
     std::vector<Vector2> getPoints() const override;
 

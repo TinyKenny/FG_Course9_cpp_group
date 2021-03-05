@@ -1,7 +1,7 @@
 #include "Asteroid.h"
 #include "Application.h"
 
-Asteroid::Asteroid(SDL_Window* window)
+Asteroid::Asteroid()
 {
 	std::vector<Vector2> points;
 	points.push_back({ 10, 0 });
@@ -19,7 +19,7 @@ Asteroid::Asteroid(SDL_Window* window)
 
 	setPoints(points);
 
-	generateSpawnPoint(window);
+	generateSpawnPoint();
 	generateVelocity();
 }
 
@@ -28,11 +28,8 @@ void Asteroid::DestroyAsteroid(Application* app)
 	app->DestroyAsteroid(this);
 }
 
-void Asteroid::generateSpawnPoint(SDL_Window* window)
+void Asteroid::generateSpawnPoint()
 {
-	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
-
-	
 	double val = (double)rand() / (double)RAND_MAX;
 	double modifier = (double)rand() / (double)RAND_MAX;
 
@@ -44,10 +41,10 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 		}
 		else
 		{
-			xPos = (double) windowWidth;
+			xPos = (double) WINDOW_WIDTH;
 		}
 
-		yPos = (double) windowHeight * modifier;
+		yPos = (double) WINDOW_HEIGHT * modifier;
 	}
 	else
 	{
@@ -57,10 +54,10 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 		}
 		else
 		{
-			yPos = (double) windowHeight;
+			yPos = (double) WINDOW_HEIGHT;
 		}
 
-		xPos = (double) windowWidth * modifier;
+		xPos = (double) WINDOW_WIDTH * modifier;
 	}
 
 	position = {(float)xPos, (float)yPos};
@@ -69,8 +66,8 @@ void Asteroid::generateSpawnPoint(SDL_Window* window)
 void Asteroid::generateVelocity()
 {
 	//get components for vector towards center
-	double centerVectorX = (windowWidth / 2.0) - (position.x);
-	double centerVectorY= (windowHeight / 2.0) - (position.y);
+	double centerVectorX = (WINDOW_WIDTH / 2.0) - (position.x);
+	double centerVectorY= (WINDOW_HEIGHT / 2.0) - (position.y);
 
 	//get current magnitude
 	double magnitude = sqrt((centerVectorX * centerVectorX) + (centerVectorY * centerVectorY));
