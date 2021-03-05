@@ -22,6 +22,10 @@ private:
 	std::vector<PlayerBullet> playerBullets;
 	PlayerSpaceship player;
 	double dt;
+	TTF_Font* font; // pool this maybe?
+	SDL_Texture* gameOverMessageTexture;
+	SDL_Rect gameOverMessageSrcRect;
+	SDL_Rect gameOverMessageDstRect;
 	Application(Window* window); // made this private to prevent stack-allocated Application-objects
 public:
 	Application() = delete; // dont allow instances of application without window

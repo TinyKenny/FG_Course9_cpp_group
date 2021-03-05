@@ -7,18 +7,83 @@
 #include <iostream>
 #include <string>
 
+//#include<SDL_ttf.h>
+
 
 
 Application::Application(Window* window) : player(this), dt(1.0 / 60.0)
 {
 	myWindow = window;
 	renderer = window->getRenderer();
+	font = window->getFont();
+
+	// TODO refactor and possibly improve
+	SDL_Surface* firstLineSurf = TTF_RenderText_Solid(font, "You got hit by an asteroid, game over!", { 255, 255, 255 });
+	SDL_Surface* secondLineSurf = TTF_RenderText_Solid(font, "Press enter to play again or press escape to exit", { 255, 255, 255 });
+
+	int width = firstLineSurf->w;
+	if (width < secondLineSurf->w)
+	{
+		width = secondLineSurf->w;
+	}
+	int height = firstLineSurf->h + secondLineSurf->h;
+
+	SDL_Surface* textSurf = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+
+	{
+		SDL_Rect firstLineSrcRect;
+		firstLineSrcRect.w = firstLineSurf->w;
+		firstLineSrcRect.h = firstLineSurf->h;
+		firstLineSrcRect.x = 0;
+		firstLineSrcRect.y = 0;
+
+		SDL_Rect firstLineDstRect;
+		firstLineDstRect.w = firstLineSurf->w;
+		firstLineDstRect.h = firstLineSurf->h;
+		firstLineDstRect.x = (width - firstLineSurf->w) / 2;
+		firstLineDstRect.y = 0;
+
+		SDL_BlitSurface(firstLineSurf, &firstLineSrcRect, textSurf, &firstLineDstRect);
+	}
+
+	{
+		SDL_Rect secondLineSrcRect;
+		secondLineSrcRect.w = secondLineSurf->w;
+		secondLineSrcRect.h = secondLineSurf->h;
+		secondLineSrcRect.x = 0;
+		secondLineSrcRect.y = 0;
+
+		SDL_Rect secondLineDstRect;
+		secondLineDstRect.w = secondLineSurf->w;
+		secondLineDstRect.h = secondLineSurf->h;
+		secondLineDstRect.x = (width - secondLineSurf->w) / 2;
+		secondLineDstRect.y = firstLineSurf->h;
+
+		SDL_BlitSurface(secondLineSurf, &secondLineSrcRect, textSurf, &secondLineDstRect);
+	}
+
+	gameOverMessageTexture = SDL_CreateTextureFromSurface(renderer, textSurf);
+
+	gameOverMessageSrcRect.w = textSurf->w;
+	gameOverMessageSrcRect.h = textSurf->h;
+	gameOverMessageSrcRect.x = 0;
+	gameOverMessageSrcRect.y = 0;
+
+	gameOverMessageDstRect.w = gameOverMessageSrcRect.w;
+	gameOverMessageDstRect.h = gameOverMessageSrcRect.h;
+	gameOverMessageDstRect.x = (WINDOW_WIDTH - gameOverMessageDstRect.w) / 2;
+	gameOverMessageDstRect.y = (WINDOW_HEIGHT - gameOverMessageDstRect.h) / 2;
+	
+	
+	SDL_FreeSurface(textSurf);
+	SDL_FreeSurface(secondLineSurf);
+	SDL_FreeSurface(firstLineSurf);
 }
 
 
 Application::~Application()
 {
-
+	SDL_DestroyTexture(gameOverMessageTexture);
 }
 
 Application* Application::getInstace(Window* window)
@@ -182,13 +247,12 @@ void Application::gameOverState()
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	// TODO display game over text
-	std::cout << std::endl << "You got hit by an asteroid, game over!" << std::endl;
-	std::cout << "press enter to play again or press escape to exit" << std::endl;
+	// TODO display player score and highscore
+
+	SDL_RenderCopy(renderer, gameOverMessageTexture, &gameOverMessageSrcRect, &gameOverMessageDstRect);
 
 	SDL_RenderPresent(renderer);
 
-	// TODO listen for player input
 
 	while (keepApplicationAlive)
 	{
