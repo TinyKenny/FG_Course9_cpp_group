@@ -16,8 +16,8 @@ private:
 	int windowHeight;
 	double xPos;
 	double yPos;
-	int maxVelocity = 20;
-	int minVelocity = 100;
+	int maxVelocity = 10;
+	int minVelocity = 60;
 
 private:
 	void generateSpawnPoint(SDL_Window* window);
