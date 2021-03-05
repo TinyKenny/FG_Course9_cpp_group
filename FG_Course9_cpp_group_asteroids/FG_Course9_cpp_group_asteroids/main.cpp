@@ -11,36 +11,9 @@ int main(int argc, char** argv)
 
 	// TODO create window
 	
-	bool playGame = true;
-	while (playGame)
-	{
-		Application* myApp = Application::getInstace(myWindow);
-		myApp->run();
-		delete myApp;
-
-		std::cout << "Play again? y/n" << std::endl;
-		bool playerHasGivenValidAnswer = false;
-		while (!playerHasGivenValidAnswer)
-		{
-
-			std::string playerInput;
-			std::getline(std::cin, playerInput);
-
-			if (playerInput == "y")
-			{
-				playerHasGivenValidAnswer = true;
-			}
-			else if (playerInput == "n")
-			{
-				playerHasGivenValidAnswer = true;
-				playGame = false;
-			}
-			else
-			{
-				std::cout << "invalid input, please input \"y\" or \"n\"" << std::endl;
-			}
-		}
-	}
+	Application* myApp = Application::getInstace(myWindow);
+	myApp->run();
+	delete myApp;
 
 	delete myWindow;
 

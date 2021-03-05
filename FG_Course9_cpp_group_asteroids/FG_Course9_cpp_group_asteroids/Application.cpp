@@ -39,12 +39,10 @@ void Application::run()
 
 		while (keepApplicationAlive)
 		{
-			GameplayState();
+			// cyclical statemachine
+			gameplayState();
 
-			if (keepApplicationAlive)
-			{
-				gameOverState();
-			}
+			gameOverState(); // can set keepApplicationAlive to false, depending on player input
 		}
 	}
 }
@@ -57,10 +55,6 @@ void Application::quit()
 
 void Application::gameOver()
 {
-	if (keepGameLoopAlive) // prevent multiple game-over messages being printed by colliding with multiple asteroids in the same update
-	{
-		std::cout << std::endl << "You got hit by an asteroid, game over!" << std::endl;
-	}
 	keepGameLoopAlive = false;
 }
 
@@ -86,7 +80,7 @@ void Application::DestroyAsteroid(Asteroid* asteroid)
 	}
 }
 
-void Application::GameplayState()
+void Application::gameplayState()
 {
 	if (keepGameLoopAlive)
 	{
@@ -164,7 +158,6 @@ void Application::spawnAsteroids()
 	asteroids.push_back(Asteroid());
 }
 
-
 void Application::updateBullets()
 {
 	for (size_t i = 0; i < playerBullets.size(); i++)
@@ -181,9 +174,33 @@ void Application::updateBullets()
 
 void Application::gameOverState()
 {
-	// TODO game over state
+	if (!keepApplicationAlive)
+	{
+		return;
+	}
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
 
 	// TODO display game over text
+	std::cout << std::endl << "You got hit by an asteroid, game over!" << std::endl;
+	std::cout << "press enter to play again or press escape to exit" << std::endl;
+
+	SDL_RenderPresent(renderer);
+
 	// TODO listen for player input
-	keepApplicationAlive = false;
+
+	while (keepApplicationAlive)
+	{
+		InputHandler::updateInputs(this);
+
+		if (InputHandler::getKeyDown(SDLK_RETURN) || InputHandler::getKeyDown(SDLK_KP_ENTER))
+		{
+			return;
+		}
+		else if (InputHandler::getKeyDown(SDLK_ESCAPE))
+		{
+			keepApplicationAlive = false;
+		}
+	}
 }

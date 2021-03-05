@@ -33,7 +33,7 @@ public:
 	void spawnBullet(Vector2 direction, Vector2 startPosition);
 	void DestroyAsteroid(Asteroid *asteroid);
 private:
-	void GameplayState();
+	void gameplayState();
 	const void renderScene();
 	void spawnAsteroids();
 	void updateBullets();
