@@ -77,7 +77,7 @@ void Asteroid::generateVelocity()
 
 	//deviate path from center by random degree
 	double val = (double)rand() / (double)RAND_MAX;
-	double modifier = (double)rand() / (double)RAND_MAX / 2;
+	double modifier = (double)rand() / (double)RAND_MAX;
 
 	if (val > 0.5f)
 	{
