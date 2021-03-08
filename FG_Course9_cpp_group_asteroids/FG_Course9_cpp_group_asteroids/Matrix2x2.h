@@ -35,6 +35,9 @@ private:
 	double m01 = 0.0f;
 	double m10 = 0.0f;
 	double m11 = 1.0f;
+public:
+	//constexpr static Matrix2x2 identity = { 1.0f, 0.0f, 0.0f, 1.0f };
+	//Matrix2x2 identity;
 };
 
 /*

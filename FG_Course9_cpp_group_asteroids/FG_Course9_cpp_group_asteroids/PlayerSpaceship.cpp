@@ -26,13 +26,15 @@ PlayerSpaceship::PlayerSpaceship(Application *application) : GameObject()
 
 	this->application = application;
 
-	resetPositionAndRotation();
+	reset();
 }
 
-void PlayerSpaceship::resetPositionAndRotation()
+void PlayerSpaceship::reset()
 {
 	position = { (float)(WINDOW_WIDTH / 2), (float)(WINDOW_HEIGHT / 2) };
+	localToWorldMatrix = Matrix2x2();
 	localToWorldMatrix.rotateByRadians(M_PI);
+	velocity = { 0.0, 0.0 };
 }
 
 void PlayerSpaceship::update(double dt)

@@ -161,7 +161,7 @@ void Application::gameplayState()
 	double accumulator = 0.0;
 	steady_clock::time_point currentTime = steady_clock::now();
 	
-	player.resetPositionAndRotation();
+	player.reset();
 	spawnAsteroids();
 
 	while (keepGameLoopAlive)
