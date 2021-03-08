@@ -11,15 +11,21 @@
 
 
 
-Application::Application(Window* window) : player(this), dt(1.0 / 60.0)
+Application::Application(Window* window)
+	: player(this),
+	dt(1.0 / 60.0),
+	highScore(0)
 {
 	myWindow = window;
 	renderer = window->getRenderer();
 	font = window->getFont();
 
 	// TODO refactor and possibly improve
-	SDL_Surface* firstLineSurf = TTF_RenderText_Solid(font, "You got hit by an asteroid, game over!", { 255, 255, 255 });
-	SDL_Surface* secondLineSurf = TTF_RenderText_Solid(font, "Press enter to play again or press escape to exit", { 255, 255, 255 });
+	currentScoreSrcRect = { 0, 0, 0, 0 };
+	resetCurrentScore();
+	
+	SDL_Surface* firstLineSurf = TTF_RenderText_Blended(font, "You got hit by an asteroid, game over!", { 255, 255, 255 });
+	SDL_Surface* secondLineSurf = TTF_RenderText_Blended(font, "Press enter to play again or press escape to exit", { 255, 255, 255 });
 
 	int width = firstLineSurf->w;
 	if (width < secondLineSurf->w)
@@ -73,13 +79,17 @@ Application::Application(Window* window) : player(this), dt(1.0 / 60.0)
 	gameOverMessageDstRect.h = gameOverMessageSrcRect.h;
 	gameOverMessageDstRect.x = (WINDOW_WIDTH - gameOverMessageDstRect.w) / 2;
 	gameOverMessageDstRect.y = (WINDOW_HEIGHT - gameOverMessageDstRect.h) / 2;
+
+	int fontHeight = TTF_FontHeight(font);
+	paddingBetweenGameOverMessageAndScore = fontHeight * 0.5;
+
+	gameOverMessageDstRect.y -= fontHeight + paddingBetweenGameOverMessageAndScore; // offset one line + padding
 	
 	
 	SDL_FreeSurface(textSurf);
 	SDL_FreeSurface(secondLineSurf);
 	SDL_FreeSurface(firstLineSurf);
 }
-
 
 Application::~Application()
 {
@@ -135,6 +145,7 @@ void Application::DestroyAsteroid(Asteroid* asteroid)
 	{
 		if (&asteroids[i] == asteroid)
 		{
+			increaseCurrentScore();
 			asteroids.erase(asteroids.begin() + i);
 		}
 	}
@@ -161,6 +172,7 @@ void Application::gameplayState()
 	double accumulator = 0.0;
 	steady_clock::time_point currentTime = steady_clock::now();
 	
+	currentScore = 0;
 	player.reset();
 	spawnAsteroids();
 
@@ -191,7 +203,6 @@ void Application::gameplayState()
 	asteroids.clear();
 	playerBullets.clear();
 }
-
 
 const void Application::renderScene()
 {
@@ -237,6 +248,36 @@ void Application::updateBullets()
 	}
 }
 
+void Application::increaseCurrentScore()
+{
+	currentScore++;
+	rasterizeCurrentScoreText();
+}
+
+void Application::resetCurrentScore()
+{
+	currentScore = 0;
+	rasterizeCurrentScoreText();
+}
+
+void Application::rasterizeCurrentScoreText()
+{
+	if (currentScoreTexture != nullptr)
+	{
+		SDL_DestroyTexture(currentScoreTexture);
+	}
+
+	std::string tempString = "Current score: ";
+	tempString += std::to_string(currentScore);
+
+	SDL_Surface* currentScoreSurf = TTF_RenderText_Blended(font, tempString.c_str(), { 255, 255, 255 });
+	currentScoreTexture = SDL_CreateTextureFromSurface(renderer, currentScoreSurf);
+	currentScoreSrcRect.w = currentScoreSurf->w;
+	currentScoreSrcRect.h = currentScoreSurf->h;
+
+	SDL_FreeSurface(currentScoreSurf);
+}
+
 void Application::gameOverState()
 {
 	if (!keepApplicationAlive)
@@ -247,11 +288,47 @@ void Application::gameOverState()
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	// TODO display player score and highscore
-
 	SDL_RenderCopy(renderer, gameOverMessageTexture, &gameOverMessageSrcRect, &gameOverMessageDstRect);
 
+	// TODO display player score and highscore
+	
+
+	SDL_Rect currentScoreDstRect;
+	currentScoreDstRect.w = currentScoreSrcRect.w;
+	currentScoreDstRect.h = currentScoreSrcRect.h;
+	currentScoreDstRect.x = (WINDOW_WIDTH - currentScoreDstRect.w) / 2;
+	currentScoreDstRect.y = gameOverMessageDstRect.y + gameOverMessageDstRect.h + paddingBetweenGameOverMessageAndScore;
+
+	int currentScoreDstX = (WINDOW_WIDTH - currentScoreDstRect.w) / 2;
+	int currentScoreDstY = gameOverMessageDstRect.y + gameOverMessageDstRect.h + paddingBetweenGameOverMessageAndScore;
+
+	SDL_Rect testRect = { currentScoreDstX, currentScoreDstY, currentScoreSrcRect.w, currentScoreSrcRect.h };
+
+	SDL_RenderCopy(renderer, currentScoreTexture, &currentScoreSrcRect, &currentScoreDstRect);
+
+
+	SDL_Surface* highScoreSurf = TTF_RenderText_Blended(font, "Highscore here", { 255, 255, 255 });
+	SDL_Texture* highScoreTexture = SDL_CreateTextureFromSurface(renderer, highScoreSurf);
+
+	SDL_Rect highScoreSrcRect;
+	highScoreSrcRect.w = highScoreSurf->w;
+	highScoreSrcRect.h = highScoreSurf->h;
+	highScoreSrcRect.x = 0;
+	highScoreSrcRect.y = 0;
+
+	SDL_Rect highScoreDstRect;
+	highScoreDstRect.w = highScoreSurf->w;
+	highScoreDstRect.h = highScoreSurf->h;
+	highScoreDstRect.x = (WINDOW_WIDTH - highScoreDstRect.w) / 2;
+	highScoreDstRect.y = currentScoreDstRect.y + currentScoreDstRect.h;
+
+	SDL_RenderCopy(renderer, highScoreTexture, &highScoreSrcRect, &highScoreDstRect);
+
+
 	SDL_RenderPresent(renderer);
+
+	//SDL_DestroyTexture(currentScoreTexture);
+	//SDL_FreeSurface(currentScoreSurf);
 
 
 	while (keepApplicationAlive)
