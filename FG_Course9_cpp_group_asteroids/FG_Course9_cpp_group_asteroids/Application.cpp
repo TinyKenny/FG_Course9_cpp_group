@@ -20,8 +20,10 @@ Application::Application(Window* window)
 	renderer = window->getRenderer();
 	font = window->getFont();
 
+	// TODO load highscore from file
 	// TODO refactor and possibly improve
 	currentScoreSrcRect = { 0, 0, 0, 0 };
+	currentScoreDstRect = { 0, 0, 0, 0 };
 	resetCurrentScore();
 	
 	SDL_Surface* firstLineSurf = TTF_RenderText_Blended(font, "You got hit by an asteroid, game over!", { 255, 255, 255 });
@@ -172,7 +174,7 @@ void Application::gameplayState()
 	double accumulator = 0.0;
 	steady_clock::time_point currentTime = steady_clock::now();
 	
-	currentScore = 0;
+	resetCurrentScore();
 	player.reset();
 	spawnAsteroids();
 
@@ -223,6 +225,8 @@ const void Application::renderScene()
 	
 	player.draw(renderer);
 
+	SDL_RenderCopy(renderer, currentScoreTexture, &currentScoreSrcRect, &currentScoreDstRect);
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -267,13 +271,16 @@ void Application::rasterizeCurrentScoreText()
 		SDL_DestroyTexture(currentScoreTexture);
 	}
 
-	std::string tempString = "Current score: ";
+	std::string tempString = "Your score: ";
 	tempString += std::to_string(currentScore);
 
 	SDL_Surface* currentScoreSurf = TTF_RenderText_Blended(font, tempString.c_str(), { 255, 255, 255 });
 	currentScoreTexture = SDL_CreateTextureFromSurface(renderer, currentScoreSurf);
 	currentScoreSrcRect.w = currentScoreSurf->w;
 	currentScoreSrcRect.h = currentScoreSurf->h;
+
+	currentScoreDstRect.w = currentScoreSrcRect.w;
+	currentScoreDstRect.h = currentScoreSrcRect.h;
 
 	SDL_FreeSurface(currentScoreSurf);
 }
@@ -290,24 +297,30 @@ void Application::gameOverState()
 
 	SDL_RenderCopy(renderer, gameOverMessageTexture, &gameOverMessageSrcRect, &gameOverMessageDstRect);
 
-	// TODO display player score and highscore
+
+	SDL_Rect currentScoreGameOverDstRect = {
+		(WINDOW_WIDTH - currentScoreDstRect.w) / 2,
+		gameOverMessageDstRect.y + gameOverMessageDstRect.h + paddingBetweenGameOverMessageAndScore,
+		currentScoreDstRect.w,
+		currentScoreDstRect.h
+	};
 	
-
-	SDL_Rect currentScoreDstRect;
-	currentScoreDstRect.w = currentScoreSrcRect.w;
-	currentScoreDstRect.h = currentScoreSrcRect.h;
-	currentScoreDstRect.x = (WINDOW_WIDTH - currentScoreDstRect.w) / 2;
-	currentScoreDstRect.y = gameOverMessageDstRect.y + gameOverMessageDstRect.h + paddingBetweenGameOverMessageAndScore;
-
-	int currentScoreDstX = (WINDOW_WIDTH - currentScoreDstRect.w) / 2;
-	int currentScoreDstY = gameOverMessageDstRect.y + gameOverMessageDstRect.h + paddingBetweenGameOverMessageAndScore;
-
-	SDL_Rect testRect = { currentScoreDstX, currentScoreDstY, currentScoreSrcRect.w, currentScoreSrcRect.h };
-
-	SDL_RenderCopy(renderer, currentScoreTexture, &currentScoreSrcRect, &currentScoreDstRect);
+	SDL_RenderCopy(renderer, currentScoreTexture, &currentScoreSrcRect, &currentScoreGameOverDstRect);
 
 
-	SDL_Surface* highScoreSurf = TTF_RenderText_Blended(font, "Highscore here", { 255, 255, 255 });
+	// TODO save highscore to file, refactor
+	std::string highScoreString;
+	if (currentScore > highScore)
+	{
+		highScoreString += "Previous highscore: ";
+	}
+	else
+	{
+		highScoreString += "Highscore: ";
+	}
+	highScoreString += std::to_string(highScore);
+
+	SDL_Surface* highScoreSurf = TTF_RenderText_Blended(font, highScoreString.c_str(), { 255, 255, 255 });
 	SDL_Texture* highScoreTexture = SDL_CreateTextureFromSurface(renderer, highScoreSurf);
 
 	SDL_Rect highScoreSrcRect;
@@ -320,16 +333,16 @@ void Application::gameOverState()
 	highScoreDstRect.w = highScoreSurf->w;
 	highScoreDstRect.h = highScoreSurf->h;
 	highScoreDstRect.x = (WINDOW_WIDTH - highScoreDstRect.w) / 2;
-	highScoreDstRect.y = currentScoreDstRect.y + currentScoreDstRect.h;
+	highScoreDstRect.y = currentScoreGameOverDstRect.y + currentScoreGameOverDstRect.h;
 
 	SDL_RenderCopy(renderer, highScoreTexture, &highScoreSrcRect, &highScoreDstRect);
 
-
 	SDL_RenderPresent(renderer);
 
-	//SDL_DestroyTexture(currentScoreTexture);
-	//SDL_FreeSurface(currentScoreSurf);
+	SDL_DestroyTexture(highScoreTexture);
+	SDL_FreeSurface(highScoreSurf);
 
+	highScore = std::max(currentScore, highScore);
 
 	while (keepApplicationAlive)
 	{
