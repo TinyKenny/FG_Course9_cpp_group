@@ -396,4 +396,5 @@ MigrationBackup/
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 
 SDL2-2.0.14/
+highscore
 

@@ -4,11 +4,11 @@
 #include "PhysicsSystem.h"
 
 #include <chrono>
-#include <iostream>
 #include <string>
+#include <iostream>
+#include <fstream>
 
-//#include<SDL_ttf.h>
-
+#define HIGHSCORE_FILE_NAME "highscore"
 
 
 Application::Application(Window* window)
@@ -20,14 +20,26 @@ Application::Application(Window* window)
 	renderer = window->getRenderer();
 	font = window->getFont();
 
-	// TODO load highscore from file
+	
+	std::ifstream highScoreFile(HIGHSCORE_FILE_NAME, std::ios::in | std::ios::binary | std::ios::ate);
+	if (highScoreFile.good())
+	{
+		std::streamsize size = highScoreFile.tellg();
+		if (size == sizeof(highScore))
+		{
+			highScoreFile.seekg(0, std::ios::beg);
+			highScoreFile.read(reinterpret_cast<char*>(&highScore), sizeof(highScore));
+		}
+	}
+	highScoreFile.close();
+
 	// TODO refactor and possibly improve
 	currentScoreSrcRect = { 0, 0, 0, 0 };
 	currentScoreDstRect = { 0, 0, 0, 0 };
 	resetCurrentScore();
 	
 	SDL_Surface* firstLineSurf = TTF_RenderText_Blended(font, "You got hit by an asteroid, game over!", { 255, 255, 255 });
-	SDL_Surface* secondLineSurf = TTF_RenderText_Blended(font, "Press enter to play again or press escape to exit", { 255, 255, 255 });
+	SDL_Surface* secondLineSurf = TTF_RenderText_Blended(font, "Press space to play again or press escape to exit", { 255, 255, 255 });
 
 	int width = firstLineSurf->w;
 	if (width < secondLineSurf->w)
@@ -308,7 +320,7 @@ void Application::gameOverState()
 	SDL_RenderCopy(renderer, currentScoreTexture, &currentScoreSrcRect, &currentScoreGameOverDstRect);
 
 
-	// TODO save highscore to file, refactor
+	// TODO refactor
 	std::string highScoreString;
 	if (currentScore > highScore)
 	{
@@ -342,13 +354,19 @@ void Application::gameOverState()
 	SDL_DestroyTexture(highScoreTexture);
 	SDL_FreeSurface(highScoreSurf);
 
-	highScore = std::max(currentScore, highScore);
+	if (currentScore > highScore)
+	{
+		highScore = currentScore;
+		std::ofstream highScoreFile(HIGHSCORE_FILE_NAME, std::ios::out | std::ios::binary);
+		highScoreFile.write(reinterpret_cast<const char*>(&highScore), sizeof(highScore));
+		highScoreFile.close();
+	}
 
 	while (keepApplicationAlive)
 	{
 		InputHandler::updateInputs(this);
 
-		if (InputHandler::getKeyDown(SDLK_RETURN) || InputHandler::getKeyDown(SDLK_KP_ENTER))
+		if (InputHandler::getKeyDown(SDLK_SPACE))
 		{
 			return;
 		}
