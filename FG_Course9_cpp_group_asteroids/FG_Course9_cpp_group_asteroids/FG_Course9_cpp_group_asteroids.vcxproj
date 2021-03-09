@@ -151,29 +151,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Asteroid.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="InputHandler.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix2x2.cpp" />
-    <ClCompile Include="PhysicsSystem.cpp" />
-    <ClCompile Include="PlayerBullet.cpp" />
-    <ClCompile Include="PlayerSpaceship.cpp" />
-    <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Asteroid.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\InputHandler.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Matrix2x2.cpp" />
+    <ClCompile Include="src\PhysicsSystem.cpp" />
+    <ClCompile Include="src\PlayerBullet.cpp" />
+    <ClCompile Include="src\PlayerSpaceship.cpp" />
+    <ClCompile Include="src\Vector2.cpp" />
+    <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Asteroid.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="InputHandler.h" />
-    <ClInclude Include="Matrix2x2.h" />
-    <ClInclude Include="PhysicsSystem.h" />
-    <ClInclude Include="PlayerBullet.h" />
-    <ClInclude Include="PlayerSpaceship.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Asteroid.h" />
+    <ClInclude Include="src\GameObject.h" />
+    <ClInclude Include="src\InputHandler.h" />
+    <ClInclude Include="src\Matrix2x2.h" />
+    <ClInclude Include="src\PhysicsSystem.h" />
+    <ClInclude Include="src\PlayerBullet.h" />
+    <ClInclude Include="src\PlayerSpaceship.h" />
+    <ClInclude Include="src\Vector2.h" />
+    <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
