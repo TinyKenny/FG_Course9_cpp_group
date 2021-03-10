@@ -15,11 +15,12 @@ public:
 	void spawnParticles(const size_t particleCount, const Vector2 origin, const float particleDuration);
 	void clearAllParticles();
 	void updateParticles(const double dt);
-	void draw(const SDL_Renderer* renderer) const;
+	void draw(SDL_Renderer* renderer) const;
 private:
-	int activeParticleCount;
-	int activeParticlesStartIndex;
-	int activeParticlesEndIndex;
+	static constexpr float particleSpeed = 10.0f;
+	size_t activeParticleCount;
+	size_t activeParticlesStartIndex;
+	size_t activeParticlesEndIndex;
 	std::vector<Particle> particles;
 	std::vector<bool> particlesActiveState;
 };

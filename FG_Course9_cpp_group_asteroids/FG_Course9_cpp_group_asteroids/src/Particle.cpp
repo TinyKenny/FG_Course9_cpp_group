@@ -5,4 +5,5 @@ Particle::Particle()
 	velocity({0.0f, 0.0f}),
 	lifeTimeLeft(0.0f)
 {
+
 }
