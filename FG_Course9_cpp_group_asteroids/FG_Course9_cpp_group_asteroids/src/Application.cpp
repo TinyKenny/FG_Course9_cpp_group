@@ -12,7 +12,8 @@
 
 
 Application::Application(Window* window)
-	: player(this),
+	: particleSystem(),
+	player(this),
 	dt(1.0 / 60.0),
 	highScore(0)
 {
@@ -160,6 +161,7 @@ void Application::DestroyAsteroid(Asteroid* asteroid)
 		if (&asteroids[i] == asteroid)
 		{
 			increaseCurrentScore();
+			particleSystem.spawnParticles(asteroid->position, 5);
 			asteroids.erase(asteroids.begin() + i);
 		}
 	}
@@ -177,6 +179,7 @@ void Application::DestroyUFO(UFO* ufo)
 		if (&UFOs[i] == ufo)
 		{
 			increaseCurrentScore();
+			particleSystem.spawnParticles(ufo->position, 5);
 			UFOs.erase(UFOs.begin() + i);
 		}
 	}
@@ -203,6 +206,7 @@ void Application::gameplayState()
 	double accumulator = 0.0;
 	steady_clock::time_point currentTime = steady_clock::now();
 	
+	particleSystem.clearAllParticles();
 	resetCurrentScore();
 	player.reset();
 	spawnAsteroids();
@@ -229,6 +233,7 @@ void Application::gameplayState()
 			}
 
 			PhysicsSystem::physicsUpdate(this, dt, UFOs, asteroids, playerBullets, player);
+			particleSystem.updateParticles(dt);
 
 			accumulator -= dt;
 			t += dt;
@@ -265,6 +270,8 @@ const void Application::renderScene()
 	}
 	
 	player.draw(renderer);
+
+	particleSystem.draw(renderer);
 
 	SDL_RenderCopy(renderer, currentScoreTexture, &currentScoreSrcRect, &currentScoreDstRect);
 

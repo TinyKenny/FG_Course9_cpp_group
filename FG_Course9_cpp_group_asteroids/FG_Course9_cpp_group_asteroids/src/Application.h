@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include "Window.h"
+#include "ParticleSystem.h"
 #include "UFO.h"
 #include "Asteroid.h"
 #include "PlayerBullet.h"
@@ -19,6 +20,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	bool keepApplicationAlive = false;
 	bool keepGameLoopAlive = false;
+	ParticleSystem particleSystem;
 	std::vector<UFO> UFOs;
 	std::vector<Asteroid> asteroids;
 	std::vector<PlayerBullet> playerBullets;
