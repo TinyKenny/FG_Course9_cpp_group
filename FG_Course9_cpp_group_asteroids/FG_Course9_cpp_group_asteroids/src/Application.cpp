@@ -161,7 +161,7 @@ void Application::DestroyAsteroid(Asteroid* asteroid)
 		if (&asteroids[i] == asteroid)
 		{
 			increaseCurrentScore();
-			particleSystem.spawnParticles(asteroid->position, 5);
+			particleSystem.spawnParticles(5, asteroid->position, 1.5f);
 			asteroids.erase(asteroids.begin() + i);
 		}
 	}
@@ -179,7 +179,7 @@ void Application::DestroyUFO(UFO* ufo)
 		if (&UFOs[i] == ufo)
 		{
 			increaseCurrentScore();
-			particleSystem.spawnParticles(ufo->position, 5);
+			particleSystem.spawnParticles(5, ufo->position, 1.5f);
 			UFOs.erase(UFOs.begin() + i);
 		}
 	}

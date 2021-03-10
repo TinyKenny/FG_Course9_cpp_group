@@ -2,6 +2,7 @@
 #define PARTICLE_SYSTEM_H
 
 #include "Vector2.h"
+#include "Particle.h"
 
 #include <SDL.h>
 
@@ -10,12 +11,17 @@
 class ParticleSystem
 {
 public:
-	void spawnParticles(const Vector2 origin, const int particleCount);
+	ParticleSystem();
+	void spawnParticles(const size_t particleCount, const Vector2 origin, const float particleDuration);
 	void clearAllParticles();
 	void updateParticles(const double dt);
 	void draw(const SDL_Renderer* renderer) const;
 private:
-	//std::vector
+	int activeParticleCount;
+	int activeParticlesStartIndex;
+	int activeParticlesEndIndex;
+	std::vector<Particle> particles;
+	std::vector<bool> particlesActiveState;
 };
 
 
