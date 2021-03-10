@@ -51,6 +51,9 @@
     <ClCompile Include="src\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\UFO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="src\ResourceManager.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UFO.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

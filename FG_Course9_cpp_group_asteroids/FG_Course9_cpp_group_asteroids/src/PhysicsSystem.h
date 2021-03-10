@@ -1,6 +1,7 @@
 #ifndef PHYSICS_SYSTEM_H
 #define PHYSICS_SYSTEM_H
 
+#include "UFO.h"
 #include "Asteroid.h"
 #include "PlayerBullet.h"
 #include "PlayerSpaceship.h"
@@ -13,6 +14,7 @@ class PhysicsSystem
 {
 public:
 	static void physicsUpdate(Application* app, double dt,
+							  std::vector<UFO>& UFOs,
 							  std::vector<Asteroid>& asteroids,
 							  std::vector<PlayerBullet>& playerBullets,
 							  PlayerSpaceship& player);

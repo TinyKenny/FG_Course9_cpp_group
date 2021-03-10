@@ -14,6 +14,22 @@ float Vector2::magnitude() const
 	return sqrtf(x * x + y * y);
 }
 
+void Vector2::setMagnitude(float desiredMagnitude)
+{
+	float magnitudeRatio = desiredMagnitude / magnitude();
+	x *= magnitudeRatio;
+	y *= magnitudeRatio;
+}
+
+/*
+void Vector2::normalize()
+{
+	float mag = magnitude();
+	x /= mag;
+	y /= mag;
+}
+*/
+
 Vector2& Vector2::operator+=(const Vector2& other)
 {
 	x += other.x;

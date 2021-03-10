@@ -189,6 +189,7 @@ void Application::gameplayState()
 	resetCurrentScore();
 	player.reset();
 	spawnAsteroids();
+	//spawnUFOs();
 
 	while (keepGameLoopAlive)
 	{
@@ -205,7 +206,7 @@ void Application::gameplayState()
 			player.update(dt);
 			updateBullets();
 
-			PhysicsSystem::physicsUpdate(this, dt, asteroids, playerBullets, player);
+			PhysicsSystem::physicsUpdate(this, dt, UFOs, asteroids, playerBullets, player);
 
 			accumulator -= dt;
 			t += dt;
@@ -214,6 +215,7 @@ void Application::gameplayState()
 		renderScene();
 	}
 
+	UFOs.clear();
 	asteroids.clear();
 	playerBullets.clear();
 }
@@ -224,6 +226,11 @@ const void Application::renderScene()
 	SDL_RenderClear(renderer);
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+	for (UFO& ufo : UFOs)
+	{
+		ufo.draw(renderer);
+	}
 
 	for (Asteroid& asteroid : asteroids)
 	{
@@ -240,6 +247,49 @@ const void Application::renderScene()
 	SDL_RenderCopy(renderer, currentScoreTexture, &currentScoreSrcRect, &currentScoreDstRect);
 
 	SDL_RenderPresent(renderer);
+}
+
+Vector2 Application::generateHazardSpawnPoint()
+{
+	Vector2 spawnPoint = {0, 0};
+	int val = rand() % 4;
+	float modifier = (float)rand() / (float)RAND_MAX;
+
+	if (val < 2)
+	{
+		if (val < 1)
+		{
+			spawnPoint.x = 0;
+		}
+		else
+		{
+			spawnPoint.x = (float)WINDOW_WIDTH - 1;
+		}
+
+		spawnPoint.y = (float)WINDOW_HEIGHT * modifier;
+	}
+	else
+	{
+		if (val < 3)
+		{
+			spawnPoint.y = 0;
+		}
+		else
+		{
+			spawnPoint.y = (float)WINDOW_HEIGHT - 1;
+		}
+
+		spawnPoint.x = (float)WINDOW_WIDTH * modifier;
+	}
+
+	spawnPoint = { 100, 100 };
+
+	return spawnPoint;
+}
+
+void Application::spawnUFOs()
+{
+	UFOs.push_back(UFO(generateHazardSpawnPoint(), &player));
 }
 
 void Application::spawnAsteroids()

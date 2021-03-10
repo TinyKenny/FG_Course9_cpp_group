@@ -8,10 +8,18 @@
 #define MINIMUM_DENOMINATOR 0.00001f
 
 void PhysicsSystem::physicsUpdate(Application* app, double dt,
+								  std::vector<UFO>& UFOs,
 								  std::vector<Asteroid>& asteroids,
 								  std::vector<PlayerBullet>& playerBullets,
 								  PlayerSpaceship& player)
 {
+
+
+	for (size_t i = 0; i < UFOs.size(); ++i)
+	{
+		UFOs[i].position += UFOs[i].velocity * dt;
+		wrapAround(UFOs[i], WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 
 	for (size_t i = 0; i < asteroids.size(); ++i)
 	{
@@ -23,6 +31,8 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 	player.position += player.velocity * dt;
 
 	wrapAround(player, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	// TODO collision detection with UFOs
 
 	for (size_t iAsteroid = 0; iAsteroid < asteroids.size(); ++iAsteroid)
 	{

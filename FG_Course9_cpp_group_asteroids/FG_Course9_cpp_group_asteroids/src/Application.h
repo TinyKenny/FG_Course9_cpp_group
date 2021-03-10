@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include "Window.h"
+#include "UFO.h"
 #include "Asteroid.h"
 #include "PlayerBullet.h"
 #include "PlayerSpaceship.h"
@@ -18,6 +19,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	bool keepApplicationAlive = false;
 	bool keepGameLoopAlive = false;
+	std::vector<UFO> UFOs;
 	std::vector<Asteroid> asteroids;
 	std::vector<PlayerBullet> playerBullets;
 	PlayerSpaceship player;
@@ -47,6 +49,8 @@ public:
 private:
 	void gameplayState();
 	const void renderScene();
+	Vector2 generateHazardSpawnPoint();
+	void spawnUFOs();
 	void spawnAsteroids();
 	void updateBullets();
 	void increaseCurrentScore();
