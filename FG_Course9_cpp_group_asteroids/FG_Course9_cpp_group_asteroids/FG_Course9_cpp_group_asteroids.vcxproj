@@ -160,6 +160,7 @@
     <ClCompile Include="src\PhysicsSystem.cpp" />
     <ClCompile Include="src\PlayerBullet.cpp" />
     <ClCompile Include="src\PlayerSpaceship.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Vector2.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
@@ -172,6 +173,7 @@
     <ClInclude Include="src\PhysicsSystem.h" />
     <ClInclude Include="src\PlayerBullet.h" />
     <ClInclude Include="src\PlayerSpaceship.h" />
+    <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\Vector2.h" />
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
