@@ -24,11 +24,6 @@ Asteroid::Asteroid(Vector2 spawnPoint)
 	generateVelocity();
 }
 
-void Asteroid::DestroyAsteroid(Application* app)
-{
-	app->DestroyAsteroid(this);
-}
-
 void Asteroid::generateVelocity()
 {
 	//get components for vector towards center

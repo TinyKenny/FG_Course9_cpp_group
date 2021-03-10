@@ -85,7 +85,8 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 				{
 				}
 				*/
-				asteroids[iAsteroid].DestroyAsteroid(app); // contains logic for splitting/destroying the asteroid in question
+				app->DestroyAsteroid(&asteroids[iAsteroid]);
+				//asteroids[iAsteroid].DestroyAsteroid(app); // contains logic for splitting/destroying the asteroid in question
 				asteroidHitByBullet = true;
 			}
 		}

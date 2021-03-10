@@ -10,11 +10,10 @@ class Asteroid : public GameObject
 public:
 	Asteroid(/*Vector2 spawnPoint*/) = delete;
 	Asteroid(Vector2 spawnPoint);
-	void DestroyAsteroid(Application* app);
 
 private:
-	double xPos;
-	double yPos;
+	//double xPos;
+	//double yPos;
 	int maxVelocity = 10;
 	int minVelocity = 60;
 
