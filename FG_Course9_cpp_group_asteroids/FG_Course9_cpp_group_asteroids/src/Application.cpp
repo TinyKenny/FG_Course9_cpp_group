@@ -95,7 +95,7 @@ Application::Application(Window* window)
 	gameOverMessageDstRect.y = (WINDOW_HEIGHT - gameOverMessageDstRect.h) / 2;
 
 	int fontHeight = TTF_FontHeight(font);
-	paddingBetweenGameOverMessageAndScore = fontHeight * 0.5;
+	paddingBetweenGameOverMessageAndScore = (int)(fontHeight * 0.5);
 
 	gameOverMessageDstRect.y -= fontHeight + paddingBetweenGameOverMessageAndScore; // offset one line + padding
 	
@@ -196,7 +196,7 @@ void Application::gameplayState()
 		double frameTime = (duration_cast<duration<double>>(newTime - currentTime)).count();
 		currentTime = newTime;
 		accumulator += frameTime;
-
+		
 
 		while (accumulator >= dt)
 		{

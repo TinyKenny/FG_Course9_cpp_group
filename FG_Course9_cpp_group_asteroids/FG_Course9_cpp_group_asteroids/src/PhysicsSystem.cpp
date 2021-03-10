@@ -3,6 +3,8 @@
 
 #include <math.h>
 
+#include <iostream>
+
 #define MINIMUM_DENOMINATOR 0.00001f
 
 void PhysicsSystem::physicsUpdate(Application* app, double dt,
@@ -10,7 +12,8 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 								  std::vector<PlayerBullet>& playerBullets,
 								  PlayerSpaceship& player)
 {
-	for (size_t i = 0; i < asteroids.size(); i++)
+
+	for (size_t i = 0; i < asteroids.size(); ++i)
 	{
 		asteroids[i].position += asteroids[i].velocity * dt;
 
@@ -21,11 +24,11 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 
 	wrapAround(player, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	for (size_t iAsteroid = 0; iAsteroid < asteroids.size(); iAsteroid++)
+	for (size_t iAsteroid = 0; iAsteroid < asteroids.size(); ++iAsteroid)
 	{
 		bool asteroidHitByBullet = false;
 		
-		for (size_t iPlayerBullet = 0; !asteroidHitByBullet && iPlayerBullet < playerBullets.size(); iPlayerBullet++)
+		for (size_t iPlayerBullet = 0; !asteroidHitByBullet && iPlayerBullet < playerBullets.size(); ++iPlayerBullet)
 		{
 			Vector2 bulletPosition = playerBullets[iPlayerBullet].position; // purely for convenience and readability
 			if (Vector2::sqrDistance(asteroids[iAsteroid].position, bulletPosition) < asteroids[iAsteroid].getCircleRadius() * asteroids[iAsteroid].getCircleRadius())
@@ -57,7 +60,7 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 		}
 	}
 
-	for (size_t i = 0; i < playerBullets.size(); i++)
+	for (size_t i = 0; i < playerBullets.size(); ++i)
 	{
 		playerBullets[i].position += playerBullets[i].velocity * dt;
 
@@ -88,7 +91,7 @@ void PhysicsSystem::wrapAround(GameObject& go, int windowWidth, int windowHeight
 
 bool PhysicsSystem::checkShapeShapeIntersection(const std::vector<Vector2>& shapeOnePoints, const std::vector<Vector2>& shapeTwoPoints)
 {
-	for (size_t iShapeOne = 0; iShapeOne < shapeOnePoints.size(); iShapeOne++)
+	for (size_t iShapeOne = 0; iShapeOne < shapeOnePoints.size(); ++iShapeOne)
 	{
 		Vector2 lineOneStart = shapeOnePoints[iShapeOne];
 		Vector2 lineOneEnd = shapeOnePoints[(iShapeOne + 1) % shapeOnePoints.size()];
@@ -97,7 +100,7 @@ bool PhysicsSystem::checkShapeShapeIntersection(const std::vector<Vector2>& shap
 
 		float lowestDenominator = 1000000.0f;
 
-		for (size_t iShapeTwo = 0; iShapeTwo < shapeTwoPoints.size(); iShapeTwo++)
+		for (size_t iShapeTwo = 0; iShapeTwo < shapeTwoPoints.size(); ++iShapeTwo)
 		{
 			Vector2 lineTwoStart = shapeTwoPoints[iShapeTwo];
 			Vector2 lineTwoEnd = shapeTwoPoints[(iShapeTwo + 1) % shapeTwoPoints.size()];
@@ -134,10 +137,10 @@ bool PhysicsSystem::checkLineSegmentShapeIntersection(const std::vector<Vector2>
 {
 	Vector2 lineSegmentDirection = lineSegmentEnd - lineSegmentStart;
 
-	for (size_t iShapeOne = 0; iShapeOne < shapePoints.size(); iShapeOne++)
+	for (size_t iShape = 0; iShape < shapePoints.size(); ++iShape)
 	{
-		Vector2 shapeLineStart = shapePoints[iShapeOne];
-		Vector2 shapeLineEnd = shapePoints[(iShapeOne + 1) % shapePoints.size()];
+		Vector2 shapeLineStart = shapePoints[iShape];
+		Vector2 shapeLineEnd = shapePoints[(iShape + 1) % shapePoints.size()];
 
 		Vector2 shapeLineDirection = shapeLineEnd - shapeLineStart;
 

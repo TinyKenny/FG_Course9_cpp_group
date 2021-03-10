@@ -4,14 +4,14 @@
 #include <string>
 
 /* TODO for VG:
-Fonts and scoring system: WIP
-	saving highscore to file and reading highscore from file is not implemented
+Fonts and scoring system: implemented
 "UFO" that chases player: not done
 	pretty much just an asteroid that constantly changes its velocity so that it always moves towards the player
+State machine for controlling game states: implemented
 Particle system: not done
 Resource pools: WIP
 Sound (option): not done
-Optimized collision detection (option): not done
+Optimized collision detection (option): Wont be implemented
 	requires spatial partitioning
 */
 
