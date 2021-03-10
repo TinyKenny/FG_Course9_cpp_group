@@ -7,5 +7,14 @@ ResourceManager::ResourceManager()
 
 TTF_Font* ResourceManager::GetFont(const std::string& name)
 {
-	return nullptr;
+	auto font = loadedFonts.find(name);
+
+	if (font == loadedFonts.end())
+	{
+		return nullptr;
+	}
+	else
+	{
+		return font->second;
+	}
 }
