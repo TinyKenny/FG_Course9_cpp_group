@@ -316,10 +316,10 @@ void Application::spawnUFOs()
 
 void Application::spawnAsteroids()
 {
-	asteroids.push_back(Asteroid());
-	asteroids.push_back(Asteroid());
-	asteroids.push_back(Asteroid());
-	asteroids.push_back(Asteroid());
+	asteroids.push_back(Asteroid(generateHazardSpawnPoint()));
+	asteroids.push_back(Asteroid(generateHazardSpawnPoint()));
+	asteroids.push_back(Asteroid(generateHazardSpawnPoint()));
+	asteroids.push_back(Asteroid(generateHazardSpawnPoint()));
 }
 
 void Application::updateBullets()

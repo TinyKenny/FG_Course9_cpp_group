@@ -1,8 +1,10 @@
 #include "Asteroid.h"
 #include "Application.h"
 
-Asteroid::Asteroid()
+Asteroid::Asteroid(Vector2 spawnPoint)
 {
+	position = spawnPoint;
+
 	std::vector<Vector2> points;
 	points.push_back({ 10, 0 });
 	points.push_back({ 10, 5 });
@@ -19,48 +21,12 @@ Asteroid::Asteroid()
 
 	setPoints(points);
 
-	generateSpawnPoint();
 	generateVelocity();
 }
 
 void Asteroid::DestroyAsteroid(Application* app)
 {
 	app->DestroyAsteroid(this);
-}
-
-void Asteroid::generateSpawnPoint()
-{
-	double val = (double)rand() / (double)RAND_MAX;
-	double modifier = (double)rand() / (double)RAND_MAX;
-
-	if (val > 0.5)
-	{
-		if (val > 0.75)
-		{
-			xPos = 0;
-		}
-		else
-		{
-			xPos = (double) WINDOW_WIDTH;
-		}
-
-		yPos = (double) WINDOW_HEIGHT * modifier;
-	}
-	else
-	{
-		if (val > 0.25)
-		{
-			yPos = 0;
-		}
-		else
-		{
-			yPos = (double) WINDOW_HEIGHT;
-		}
-
-		xPos = (double) WINDOW_WIDTH * modifier;
-	}
-
-	position = {(float)xPos, (float)yPos};
 }
 
 void Asteroid::generateVelocity()

@@ -8,7 +8,8 @@ class Application;
 class Asteroid : public GameObject
 {
 public:
-	Asteroid();
+	Asteroid(/*Vector2 spawnPoint*/) = delete;
+	Asteroid(Vector2 spawnPoint);
 	void DestroyAsteroid(Application* app);
 
 private:
@@ -17,8 +18,6 @@ private:
 	int maxVelocity = 10;
 	int minVelocity = 60;
 
-private:
-	void generateSpawnPoint();
 	void generateVelocity();
 };
 

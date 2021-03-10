@@ -7,6 +7,7 @@
 class UFO : public GameObject
 {
 public:
+	UFO() = delete;
 	UFO(Vector2 spawnPoint, PlayerSpaceship* playerObject);
 	void update();
 private:
