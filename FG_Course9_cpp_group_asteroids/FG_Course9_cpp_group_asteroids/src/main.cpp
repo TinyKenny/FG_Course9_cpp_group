@@ -5,7 +5,7 @@
 
 /* TODO for VG:
 Fonts and scoring system: implemented
-"UFO" that chases player: WIP
+"UFO" that chases player: implemented (UFO and Asteroid use a lot of duplicated code atm)
 	constantly changes its velocity so that it always moves towards the player
 State machine for controlling game states: implemented
 Particle system: not done

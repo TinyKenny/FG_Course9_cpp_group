@@ -46,6 +46,7 @@ public:
 	void gameOver();
 	void spawnBullet(Vector2 direction, Vector2 startPosition);
 	void DestroyAsteroid(Asteroid *asteroid);
+	void DestroyUFO(UFO *ufo);
 private:
 	void gameplayState();
 	const void renderScene();

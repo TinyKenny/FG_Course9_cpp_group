@@ -11,7 +11,7 @@ public:
 	void update();
 private:
 	PlayerSpaceship* player;
-	static constexpr float speed = 5.0f;
+	static constexpr float speed = 40.0f;
 };
 
 

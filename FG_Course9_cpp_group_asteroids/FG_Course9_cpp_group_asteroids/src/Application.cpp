@@ -170,6 +170,23 @@ void Application::DestroyAsteroid(Asteroid* asteroid)
 	}
 }
 
+void Application::DestroyUFO(UFO* ufo)
+{
+	for (size_t i = 0; i < UFOs.size(); i++)
+	{
+		if (&UFOs[i] == ufo)
+		{
+			increaseCurrentScore();
+			UFOs.erase(UFOs.begin() + i);
+		}
+	}
+
+	if (UFOs.size() == 0)
+	{
+		spawnUFOs();
+	}
+}
+
 void Application::gameplayState()
 {
 	if (keepGameLoopAlive)
@@ -189,7 +206,7 @@ void Application::gameplayState()
 	resetCurrentScore();
 	player.reset();
 	spawnAsteroids();
-	//spawnUFOs();
+	spawnUFOs();
 
 	while (keepGameLoopAlive)
 	{
@@ -205,6 +222,11 @@ void Application::gameplayState()
 
 			player.update(dt);
 			updateBullets();
+
+			for (size_t i = 0; i < UFOs.size(); ++i)
+			{
+				UFOs[i].update();
+			}
 
 			PhysicsSystem::physicsUpdate(this, dt, UFOs, asteroids, playerBullets, player);
 
@@ -251,6 +273,7 @@ const void Application::renderScene()
 
 Vector2 Application::generateHazardSpawnPoint()
 {
+	// TODO use this for asteroids too
 	Vector2 spawnPoint = {0, 0};
 	int val = rand() % 4;
 	float modifier = (float)rand() / (float)RAND_MAX;
@@ -282,13 +305,12 @@ Vector2 Application::generateHazardSpawnPoint()
 		spawnPoint.x = (float)WINDOW_WIDTH * modifier;
 	}
 
-	spawnPoint = { 100, 100 };
-
 	return spawnPoint;
 }
 
 void Application::spawnUFOs()
 {
+	UFOs.push_back(UFO(generateHazardSpawnPoint(), &player));
 	UFOs.push_back(UFO(generateHazardSpawnPoint(), &player));
 }
 

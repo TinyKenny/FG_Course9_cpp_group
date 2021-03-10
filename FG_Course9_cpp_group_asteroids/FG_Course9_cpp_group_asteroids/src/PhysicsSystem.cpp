@@ -34,10 +34,46 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 
 	// TODO collision detection with UFOs
 
+	for (size_t iUFO = 0; iUFO < UFOs.size(); ++iUFO)
+	{
+		bool ufoHitByBullet = false;
+		
+		for (size_t iPlayerBullet = 0; !ufoHitByBullet && iPlayerBullet < playerBullets.size(); ++iPlayerBullet)
+		{
+			Vector2 bulletPosition = playerBullets[iPlayerBullet].position; // purely for convenience and readability
+			if (Vector2::sqrDistance(UFOs[iUFO].position, bulletPosition) < UFOs[iUFO].getCircleRadius() * UFOs[iUFO].getCircleRadius())
+			{
+				// asteroid collides with bullet
+				/*
+				if (checkLineSegmentShapeIntersection(asteroids[iAsteroid].getPoints(), bulletPosition, bulletPosition + playerBullets[iPlayerBullet].velocity * dt))
+				{
+				}
+				*/
+				app->DestroyUFO(&UFOs[iUFO]);
+				ufoHitByBullet = true;
+			}
+		}
+
+		if (!ufoHitByBullet)
+		{
+			float distanceForCircleCollision = player.getCircleRadius() + UFOs[iUFO].getCircleRadius();
+
+			if (Vector2::sqrDistance(player.position, UFOs[iUFO].position) < distanceForCircleCollision * distanceForCircleCollision)
+			{
+				if (checkShapeShapeIntersection(player.getPoints(), UFOs[iUFO].getPoints()))
+				{
+					// player and asteroid collides
+					app->gameOver();
+					// break;
+				}
+			}
+		}
+	}
+
 	for (size_t iAsteroid = 0; iAsteroid < asteroids.size(); ++iAsteroid)
 	{
 		bool asteroidHitByBullet = false;
-		
+
 		for (size_t iPlayerBullet = 0; !asteroidHitByBullet && iPlayerBullet < playerBullets.size(); ++iPlayerBullet)
 		{
 			Vector2 bulletPosition = playerBullets[iPlayerBullet].position; // purely for convenience and readability
@@ -49,8 +85,8 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 				{
 				}
 				*/
-					asteroids[iAsteroid].DestroyAsteroid(app); // contains logic for splitting/destroying the asteroid in question
-					asteroidHitByBullet = true;
+				asteroids[iAsteroid].DestroyAsteroid(app); // contains logic for splitting/destroying the asteroid in question
+				asteroidHitByBullet = true;
 			}
 		}
 
