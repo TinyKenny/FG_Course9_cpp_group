@@ -19,8 +19,8 @@ Application::Application(Window* window)
 {
 	myWindow = window;
 	renderer = window->getRenderer();
+	font = resourceManager.getFont(std::string("default"));
 
-	
 	std::ifstream highScoreFile(HIGHSCORE_FILE_NAME, std::ios::in | std::ios::binary | std::ios::ate);
 	if (highScoreFile.good())
 	{
@@ -38,8 +38,6 @@ Application::Application(Window* window)
 	currentScoreDstRect = { 0, 0, 0, 0 };
 	resetCurrentScore();
 
-	//font = resourceManager.getFont(std::string("default"));
-	font = window->getFont();
 
 
 	SDL_Surface* firstLineSurf = TTF_RenderText_Blended(font, "You got hit by an asteroid, game over!", { 255, 255, 255 });
