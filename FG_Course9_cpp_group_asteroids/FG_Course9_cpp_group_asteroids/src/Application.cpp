@@ -12,14 +12,13 @@
 
 
 Application::Application(Window* window)
-	: particleSystem(),
+	: particleSystem(), resourceManager(),
 	player(this),
 	dt(1.0 / 60.0),
 	highScore(0)
 {
 	myWindow = window;
 	renderer = window->getRenderer();
-	font = window->getFont();
 
 	
 	std::ifstream highScoreFile(HIGHSCORE_FILE_NAME, std::ios::in | std::ios::binary | std::ios::ate);
@@ -38,7 +37,11 @@ Application::Application(Window* window)
 	currentScoreSrcRect = { 0, 0, 0, 0 };
 	currentScoreDstRect = { 0, 0, 0, 0 };
 	resetCurrentScore();
-	
+
+	//font = resourceManager.getFont(std::string("default"));
+	font = window->getFont();
+
+
 	SDL_Surface* firstLineSurf = TTF_RenderText_Blended(font, "You got hit by an asteroid, game over!", { 255, 255, 255 });
 	SDL_Surface* secondLineSurf = TTF_RenderText_Blended(font, "Press space to play again or press escape to exit", { 255, 255, 255 });
 

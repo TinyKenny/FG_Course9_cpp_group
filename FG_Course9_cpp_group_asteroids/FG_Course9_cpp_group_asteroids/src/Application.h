@@ -7,6 +7,7 @@
 #include "Asteroid.h"
 #include "PlayerBullet.h"
 #include "PlayerSpaceship.h"
+#include "ResourceManager.h"
 
 #include <SDL.h>
 
@@ -20,6 +21,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	bool keepApplicationAlive = false;
 	bool keepGameLoopAlive = false;
+	ResourceManager resourceManager;
 	ParticleSystem particleSystem;
 	std::vector<UFO> UFOs;
 	std::vector<Asteroid> asteroids;
@@ -28,6 +30,7 @@ private:
 	double dt;
 	int currentScore;
 	int highScore;
+
 
 	TTF_Font* font = nullptr; // pool this maybe?
 	SDL_Texture* gameOverMessageTexture = nullptr;
