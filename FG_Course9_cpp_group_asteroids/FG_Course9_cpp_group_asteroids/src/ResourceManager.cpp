@@ -3,7 +3,16 @@
 ResourceManager::ResourceManager()
 {
 	loadedFonts["default"] = TTF_OpenFont("res/comic.ttf", 20);
-	//loadedSounds["shot"] = Mix_LoadWAV("res/shot.wav");
+	loadedSounds["shot"] = Mix_LoadWAV("res/shot.wav");
+	loadedSounds["hit"] = Mix_LoadWAV("res/hit.wav");
+}
+
+ResourceManager::~ResourceManager()
+{
+	for (auto const& x : loadedSounds)
+	{
+		Mix_FreeChunk(x.second);
+	}
 }
 
 TTF_Font* ResourceManager::getFont(const std::string& name)
@@ -26,6 +35,7 @@ Mix_Chunk* ResourceManager::getSoundClip(const std::string& name)
 
 	if (chunk == loadedSounds.end())
 	{
+
 		return nullptr;
 	}
 	else

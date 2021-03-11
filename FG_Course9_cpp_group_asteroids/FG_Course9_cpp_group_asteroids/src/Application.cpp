@@ -19,7 +19,13 @@ Application::Application(Window* window)
 {
 	myWindow = window;
 	renderer = window->getRenderer();
+
+
+
 	font = resourceManager.getFont(std::string("default"));
+	shotSound = resourceManager.getSoundClip(std::string("shot"));
+	hitSound = resourceManager.getSoundClip(std::string("hit"));
+
 
 	std::ifstream highScoreFile(HIGHSCORE_FILE_NAME, std::ios::in | std::ios::binary | std::ios::ate);
 	if (highScoreFile.good())
@@ -151,6 +157,10 @@ void Application::gameOver()
 
 void Application::spawnBullet(Vector2 direction, Vector2 startPosition)
 {
+
+
+	Mix_PlayChannel(-1, shotSound, 0);
+
 	PlayerBullet bullet(direction, startPosition);
 	playerBullets.push_back(bullet);
 }
@@ -163,6 +173,7 @@ void Application::DestroyAsteroid(Asteroid* asteroid)
 		{
 			increaseCurrentScore();
 			particleSystem.spawnParticles(5, asteroid->position, 1.5f);
+			Mix_PlayChannel(-1, hitSound, 0);
 			asteroids.erase(asteroids.begin() + i);
 		}
 	}
@@ -181,6 +192,7 @@ void Application::DestroyUFO(UFO* ufo)
 		{
 			increaseCurrentScore();
 			particleSystem.spawnParticles(5, ufo->position, 1.5f);
+			Mix_PlayChannel(-1, hitSound, 0);
 			UFOs.erase(UFOs.begin() + i);
 		}
 	}

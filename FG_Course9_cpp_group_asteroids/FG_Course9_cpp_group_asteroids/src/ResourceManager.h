@@ -12,6 +12,7 @@ class ResourceManager
 {
 public:
 	ResourceManager();
+	~ResourceManager();
 
 	TTF_Font* getFont(const std::string& name);
 	Mix_Chunk* getSoundClip(const std::string& name);

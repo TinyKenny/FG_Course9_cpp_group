@@ -1,5 +1,5 @@
 #include "Window.h"
-
+#include <SDL_mixer.h>
 #include "InputHandler.h"
 
 #include <iostream>
@@ -26,10 +26,13 @@ Window::~Window()
 		SDL_DestroyWindow(window);
 	}
 
+	Mix_CloseAudio();
+
 	if (TTF_WasInit())
 	{
 		TTF_Quit();
 	}
+
 	if (SDL_WasInit(SDL_INIT_EVERYTHING))
 	{
 		SDL_Quit();
@@ -88,6 +91,11 @@ void Window::initSDL()
 	{
 		std::cout << TTF_GetError() << std::endl;
 		return;
+	}
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048 < 0))
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 	}
 
 	setupSuccessful = true;

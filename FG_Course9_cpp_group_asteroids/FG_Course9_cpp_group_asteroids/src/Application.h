@@ -31,7 +31,8 @@ private:
 	int currentScore;
 	int highScore;
 
-
+	Mix_Chunk* hitSound;
+	Mix_Chunk* shotSound;
 	TTF_Font* font = nullptr; // pool this maybe?
 	SDL_Texture* gameOverMessageTexture = nullptr;
 	SDL_Rect gameOverMessageSrcRect;
