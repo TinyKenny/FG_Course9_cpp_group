@@ -1,6 +1,7 @@
 #include "ParticleSystem.h"
 
 #include <math.h>
+#include <iostream>
 
 #define TAU M_PI * 2.0
 
@@ -30,7 +31,6 @@ void ParticleSystem::spawnParticles(const size_t particleCount, const Vector2 or
 			{
 				particlesActiveState[i] = true;
 				particles[i].position = origin;
-				// TODO randomize velocity
 				double currentAngle = angleStepSizeRad * (particleCount - particlesLeft);
 				particles[i].velocity = { (float)cos(currentAngle) * particleSpeed, (float)sin(currentAngle) * particleSpeed };
 				particles[i].lifeTimeLeft = particleDuration;
@@ -59,7 +59,6 @@ void ParticleSystem::spawnParticles(const size_t particleCount, const Vector2 or
 	{
 		Particle toAdd;
 		toAdd.position = origin;
-		// TODO randomize velocity
 		double currentAngle = angleStepSizeRad * (particleCount - particlesLeft);
 		toAdd.velocity = { (float)cos(currentAngle) * particleSpeed, (float)sin(currentAngle) * particleSpeed };
 		toAdd.lifeTimeLeft = particleDuration;
@@ -86,7 +85,6 @@ void ParticleSystem::clearAllParticles()
 
 void ParticleSystem::updateParticles(const double dt)
 {
-	// TODO use activeParticlesStartIndex and activeParticlesEndIndex, once they are correctly updated
 	size_t oldActiveParticleCount = activeParticleCount;
 	for (size_t i = 0; i < particlesActiveState.size(); ++i)
 	{
@@ -94,7 +92,7 @@ void ParticleSystem::updateParticles(const double dt)
 		{
 			particles[i].position += particles[i].velocity * dt;
 			particles[i].lifeTimeLeft -= (float)dt;
-			//particlesActiveState[i] = particles[i].lifeTimeLeft > 0.0f;
+
 			if (particles[i].lifeTimeLeft <= 0.0f)
 			{
 				particlesActiveState[i] = false;
@@ -103,21 +101,43 @@ void ParticleSystem::updateParticles(const double dt)
 		}
 	}
 
+	if (activeParticleCount == 0)
+	{
+		activeParticlesStartIndex = 0;
+		activeParticlesEndIndex = 0;
+	}
 	if (activeParticleCount != oldActiveParticleCount)
 	{
-		// TODO update activeParticlesStartIndex
-		// TODO update activeParticlesEndIndex
+		for (size_t i = 0; i < particlesActiveState.size(); ++i)
+		{
+			if (particlesActiveState[i])
+			{
+				activeParticlesStartIndex = i;
+				break;
+			}
+		}
+
+		for (int i = particlesActiveState.size() - 1; i >= 0; --i)
+		{
+			if (particlesActiveState[i])
+			{
+				activeParticlesEndIndex = i;
+				break;
+			}
+		}
 	}
 }
 
 void ParticleSystem::draw(SDL_Renderer* renderer) const
 {
-	// TODO use activeParticlesStartIndex and activeParticlesEndIndex, once they are correctly updated
-	for (size_t i = 0; i < particlesActiveState.size(); ++i)
+	if (activeParticleCount > 0)
 	{
-		if (particlesActiveState[i])
+		for (size_t i = activeParticlesStartIndex; i <= activeParticlesEndIndex; ++i)
 		{
-			SDL_RenderDrawPointF(renderer, particles[i].position.x, particles[i].position.y);
+			if (particlesActiveState[i])
+			{
+				SDL_RenderDrawPointF(renderer, particles[i].position.x, particles[i].position.y);
+			}
 		}
 	}
 }

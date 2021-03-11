@@ -3,8 +3,6 @@
 
 #include <math.h>
 
-#include <iostream>
-
 #define MINIMUM_DENOMINATOR 0.00001f
 
 void PhysicsSystem::physicsUpdate(Application* app, double dt,
@@ -13,8 +11,6 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 								  std::vector<PlayerBullet>& playerBullets,
 								  PlayerSpaceship& player)
 {
-
-
 	for (size_t i = 0; i < UFOs.size(); ++i)
 	{
 		UFOs[i].position += UFOs[i].velocity * dt;
@@ -28,12 +24,18 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 		wrapAround(asteroids[i], WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
+	for (size_t i = 0; i < playerBullets.size(); ++i)
+	{
+		playerBullets[i].position += playerBullets[i].velocity * dt;
+
+		wrapAround(playerBullets[i], WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+
 	player.position += player.velocity * dt;
 
 	wrapAround(player, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	// TODO collision detection with UFOs
-
+	
 	for (size_t iUFO = 0; iUFO < UFOs.size(); ++iUFO)
 	{
 		bool ufoHitByBullet = false;
@@ -43,12 +45,7 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 			Vector2 bulletPosition = playerBullets[iPlayerBullet].position; // purely for convenience and readability
 			if (Vector2::sqrDistance(UFOs[iUFO].position, bulletPosition) < UFOs[iUFO].getCircleRadius() * UFOs[iUFO].getCircleRadius())
 			{
-				// asteroid collides with bullet
-				/*
-				if (checkLineSegmentShapeIntersection(asteroids[iAsteroid].getPoints(), bulletPosition, bulletPosition + playerBullets[iPlayerBullet].velocity * dt))
-				{
-				}
-				*/
+				// ufo collides with bullet
 				app->DestroyUFO(&UFOs[iUFO]);
 				ufoHitByBullet = true;
 			}
@@ -64,7 +61,7 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 				{
 					// player and asteroid collides
 					app->gameOver();
-					// break;
+					break;
 				}
 			}
 		}
@@ -80,13 +77,7 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 			if (Vector2::sqrDistance(asteroids[iAsteroid].position, bulletPosition) < asteroids[iAsteroid].getCircleRadius() * asteroids[iAsteroid].getCircleRadius())
 			{
 				// asteroid collides with bullet
-				/*
-				if (checkLineSegmentShapeIntersection(asteroids[iAsteroid].getPoints(), bulletPosition, bulletPosition + playerBullets[iPlayerBullet].velocity * dt))
-				{
-				}
-				*/
 				app->DestroyAsteroid(&asteroids[iAsteroid]);
-				//asteroids[iAsteroid].DestroyAsteroid(app); // contains logic for splitting/destroying the asteroid in question
 				asteroidHitByBullet = true;
 			}
 		}
@@ -101,17 +92,10 @@ void PhysicsSystem::physicsUpdate(Application* app, double dt,
 				{
 					// player and asteroid collides
 					app->gameOver();
-					// break;
+					break;
 				}
 			}
 		}
-	}
-
-	for (size_t i = 0; i < playerBullets.size(); ++i)
-	{
-		playerBullets[i].position += playerBullets[i].velocity * dt;
-
-		wrapAround(playerBullets[i], WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 }
 
@@ -174,42 +158,6 @@ bool PhysicsSystem::checkShapeShapeIntersection(const std::vector<Vector2>& shap
 			{
 				return true;
 			}
-		}
-	}
-
-	return false;
-}
-
-bool PhysicsSystem::checkLineSegmentShapeIntersection(const std::vector<Vector2>& shapePoints, const Vector2 lineSegmentStart, const Vector2 lineSegmentEnd)
-{
-	Vector2 lineSegmentDirection = lineSegmentEnd - lineSegmentStart;
-
-	for (size_t iShape = 0; iShape < shapePoints.size(); ++iShape)
-	{
-		Vector2 shapeLineStart = shapePoints[iShape];
-		Vector2 shapeLineEnd = shapePoints[(iShape + 1) % shapePoints.size()];
-
-		Vector2 shapeLineDirection = shapeLineEnd - shapeLineStart;
-
-		float denominator = shapeLineDirection.x * lineSegmentDirection.y - lineSegmentDirection.x * shapeLineDirection.y;
-
-		if (std::abs(denominator) < MINIMUM_DENOMINATOR)
-		{
-			continue;
-		}
-
-		Vector2 shapeLineStartToLineSegmentStart = lineSegmentStart - shapeLineStart;
-
-		float tOne = (shapeLineStartToLineSegmentStart.x * lineSegmentDirection.y - lineSegmentDirection.x * shapeLineStartToLineSegmentStart.y) / denominator;
-		if (tOne < 0 || tOne > 1)
-		{
-			continue;
-		}
-
-		float tTwo = (shapeLineStartToLineSegmentStart.x * shapeLineDirection.y - shapeLineDirection.x * shapeLineStartToLineSegmentStart.y) / denominator;
-		if (tTwo >= 0 && tTwo <= 1)
-		{
-			return true;
 		}
 	}
 
