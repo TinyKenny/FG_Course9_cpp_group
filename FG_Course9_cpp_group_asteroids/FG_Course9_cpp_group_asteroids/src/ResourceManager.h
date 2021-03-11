@@ -5,7 +5,6 @@
 #include "iostream"
 #include <SDL.h>
 #include <map>
-
 #include <memory>
 
 class ResourceManager
