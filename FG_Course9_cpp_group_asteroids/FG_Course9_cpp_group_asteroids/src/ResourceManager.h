@@ -13,8 +13,8 @@ class ResourceManager
 public:
 	ResourceManager();
 
-	TTF_Font* GetFont(const std::string& name);
-	Mix_Chunk* GetSoundClip(const std::string& name);
+	TTF_Font* getFont(const std::string& name);
+	Mix_Chunk* getSoundClip(const std::string& name);
 
 private:
 	std::map<std::string, TTF_Font*> loadedFonts;
